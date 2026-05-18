@@ -1,0 +1,24 @@
+{
+    "fish": {
+        "anchovy": 2,
+        "sardine": 3,
+        "bass": 4,
+        "chub_mackerel": 4,
+        "pink_rockling": 3,
+        "rockling": 3,
+        "pink_salmon": 3,
+        "duckfish": -18446744073709551616,
+        "black_marlin": 20,
+        "yellow_perch": 3
+    },
+    "misc": {
+        "mallet": 5,
+        "rotting wood": 1,
+        "placebridge": 1,
+        "mold": 2,
+        "copper": 1,
+        "yellow_mold": 2,
+        "rotting_wood": 1,
+        "golf_cart_part": null
+    }
+}

@@ -1,0 +1,94 @@
+{
+    "inventory": {
+        "copper": -608742554432414992454,
+        "mallet": 11,
+        "placebridge": 99999999999999999999999999999999999999999999999999545,
+        "anchovy": 717,
+        "sardine": 8,
+        "bass": 1,
+        "chub_mackerel": 1,
+        "pink_rockling": 1,
+        "rockling": 0,
+        "pink_salmon": 0,
+        "yellow_perch": 6986,
+        "black_marlin": 24,
+        "duckfish": 0,
+        "rotting_wood": 5,
+        "yellow_mold": 7,
+        "golf_cart_part": 959
+    },
+    "total": {
+        "copper": -608742554432414992990,
+        "anchovy": 813,
+        "sardine": 43,
+        "bass": 46,
+        "chub_mackerel": 7,
+        "pink_rockling": 7,
+        "rockling": 2,
+        "pink_salmon": 5,
+        "mallet": 11,
+        "placebridge": 48,
+        "rotting_wood": 5,
+        "yellow_mold": 1,
+        "golf_cart_part": 278,
+        "duckfish": 32,
+        "black_marlin": 30,
+        "yellow_perch": 18
+    },
+    "placebridge": [],
+    "pos": [
+        1122,
+        1164
+    ],
+    "node densities": [
+        {
+            "anchovy": 9,
+            "chub_mackerel": 7,
+            "sardine": 3
+        },
+        {
+            "anchovy": 14,
+            "sardine": 3
+        },
+        {
+            "anchovy": 20,
+            "sardine": 0
+        },
+        {
+            "anchovy": 5,
+            "bass": 8,
+            "sardine": 5
+        },
+        {
+            "pink_rockling": 8,
+            "rockling": 8
+        },
+        {
+            "pink_salmon": 20,
+            "anchovy": 9
+        },
+        {
+            "pink_salmon": 24,
+            "anchovy": 5
+        },
+        {
+            "black_marlin": 1
+        },
+        {
+            "yellow_perch": 7
+        },
+        {
+            "yellow_perch": 7
+        }
+    ],
+    "golf cart": {
+        "pos": [
+            787.7000000000156,
+            998.1999999999958
+        ],
+        "fuel": 18900,
+        "rate": 5,
+        "accel": 0.13,
+        "level": 0
+    }
+}

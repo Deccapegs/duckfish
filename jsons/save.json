@@ -1,0 +1,83 @@
+{
+    "inventory": {
+        "copper": 0,
+        "mallet": 0,
+        "placebridge": 1,
+        "anchovy": 0,
+        "sardine": 1,
+        "bass": 0,
+        "chub_mackerel": 0,
+        "pink_rockling": 0,
+        "rockling": 0,
+        "pink_salmon": 0,
+        "duckfish": 0,
+        "rotting_wood": 0,
+        "yellow_mold": 0,
+        "golf_cart_part": 0
+    },
+    "total": {
+        "copper": 0,
+        "anchovy": 0,
+        "sardine": 1,
+        "bass": 0,
+        "chub_mackerel": 0,
+        "rockling": 0,
+        "pink_rockling": 0,
+        "pink_salmon": 0,
+        "mallet": 0,
+        "placebridge": 1,
+        "rotting_wood": 0,
+        "mold": 0,
+        "yellow_mold": 0,
+        "golf_cart_part": 0,
+        "duckfish": 0
+    },
+    "placebridge": [],
+    "pos": [
+        915,
+        351
+    ],
+    "node densities": [
+        {
+            "anchovy": 9,
+            "chub_mackerel": 7,
+            "sardine": 4
+        },
+        {
+            "anchovy": 15,
+            "sardine": 5
+        },
+        {
+            "anchovy": 20,
+            "sardine": 2
+        },
+        {
+            "anchovy": 5,
+            "bass": 10,
+            "sardine": 5
+        },
+        {
+            "pink_rockling": 10,
+            "rockling": 10
+        },
+        {
+            "pink_salmon": 20,
+            "anchovy": 10
+        },
+        {
+            "pink_salmon": 10,
+            "anchovy": 5,
+            "sardine": 5
+        }
+    ],
+    "golf cart": {
+        "pos": [
+            -1000.0,
+            -1000.0
+        ],
+        "fuel": 36000,
+        "rate": 10,
+        "accel": 0.13,
+        "level": 0
+    }
+}
