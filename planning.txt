@@ -1,0 +1,253 @@
+planning
+doto list:
+-derc class
+ -w/ animation flag
+ - NEVERMIND (animton class)
+-make coconut tree
+-make fishing collidsion more real(not start fishing on cliff and mid air)
+-make invrtoty view
+-make fishing nodes
+-make pretty(partilces)
+-make placable bridght
+-make (more) fishing nodes 
+-make new fish
+-learn json OR pickle
+-make chicken head bob 
+-(faster when player KEYDOWN wasd(kind of looks like dancing))
+-make stall to buy placalbe bridgh
+-improve clicking (register mouseup and down)
+-improve fishing nodes(change density on what player fish e.g, player fishes all sadrine in area so no more sardine
+			change density based on distance, use dicts)
+-make it so when 0 item of something it still there because desovered
+-make save files using json or pickle (incude pos and desoverary)
+-make grass edge extend pass tile
+-make sand
+-make different grass tile types
+-make better tile list handling
+-make big map
+-make chunks
+-make waves
+-fix placebridge {why breakkk ):} {why did that work?????}
+-make diaonal move slower and change collide sys
+-make node range you lazy bum (you know what, screw this)
+-make save placebridge (took me around 40 secs to spell bridge)
+-make save player pos
+-make mallet
+-improve 
+-make better sell fish (use dict instead of elif)
+-make 
+-make paragraphs
+-make add fish to node
+-save node densitys
+-make sell single fish
+-make more fish
+-extend placebridge
+-fix chub mackel and sadine
+-make small font
+-make fishopedia entries (do art if motivated, more entries when more fish caught, like PVZ almiac)
+-sort item types/catorgorys in save
+-make func to make items
+-draw something
+-make duck walk more "expessive"
+-make duck sit
+-revert sort items and make func put items after something else that was flaged
+-make diappearing npcs (like golf cart [part] after taking it)
+-make golf cart part
+-golf cart (requires fish as fuel)
+-make buttons class
+-fix y vibtating golf cart
+-make player be able to hold things(include usables)
+-let player be able to refuel golf cart
+-make golf cart fuel meter (try no ui)
+-golf cart "blacksmith" npc
+-make duck sit (as idle)
+-make colour pallete for grass better
+-the something( moduler house part, start with stone)
+-change img tile sys
+-fix rockling colour
+-npc dia paths
+-2 more golf cart part npcs
+-rework fishing
+-try lighting
+-golf cart upgrades
+-make bell
+-set up auto map reading
+-fix fish
+-make fish have bias toward the spawning point
+-finish village
+-fix inventoy holding (mallet)
+-make a map
+-rework fishing
+-make map smaller and more digestable
+
+-make it assasicble and and a good tutoral
+ -golfcart respawn d
+ -fix black mariln rarity d
+ -fix golf cart part not disappearing d
+ -remove golf cart upgrading and buff golf cartd
+
+ -add saving (to fuel and golf cart parts)
+ -check if node saves are working
+ -fix speech highlights
+ -undercomp the night (remove the light around duck)
+-add rod
+-add duckfish
+-add maybe 5 more fish
+-add one more npc at village
+-finish tree (can start working on something else)
+scope too big for bad code, so no:
+|
+v
+
+
+
+
+-hole behind tall dercs
+-try diaangal movement and pray
+
+-fix mallet and speech bug
+-fit drawing in fishopedia
+-improve invortory scrolling (try learn two finger swipe)
+-make save files using json or pickle
+-make smooth cam
+-make fishing collidsion esmore real(able to fish behind cliff)
+-make enterable building
+-make minigame 1 (train smash-esque)
+-make layer 3 (for trees and decr)
+-make paths {layer 2}
+-make grass and rock exentd pass to make more smooth
+-make very big map (have village)
+-make castle
+-make more fish
+-make golf cart
+-make rough waters (need sturdy bridge)
+-make fishing rod upgrading
+-make minigame 2 (coin flip gambling, have max)
+-make duckfish
+-make inventory chunk loading
+-make ygg wigglly
+-make tree plantation
+
+
+
+	the game continues
+
+
+very important but hard, so do when ever:
+-fishing math(physics diffiecetly warining)
+-npcs and quest (half done)
+-fish disections (more items)
+-trading (done)
+-animate as many things as motviation allows
+-rework fishing (fish for fish insteted of hoping in the empty blue abyss of the ocean)
+-make most art topdown
+
+
+item ideas:
+-tetporlar
+-bait
+
+location ideas:
+-shrine
+ -each shrine increase rate of a fish
+-ygg (big as heck)
+ -LORE:
+ -starting dock/jetty from tree is make
+-village
+ -stone one
+ -brick one
+ -mud one
+ -wood one
+
+OPTIONAL:
+-slopes
+-draw fishopedia (requries alot of skill and effort)
+-make fishing stall(sell fish for more)
+-boat
+ -NEVERMIND (will ruin pacing of game)
+-nighttime?
+-lighting for ^^^
+-lamp for ^^^
+-chunk loading (not optional if game is slow)
+-house
+-aquarianum
+-map
+-ramps and mountains
+-rod upgrades (include tradeoffs e.g:
+		-+ money per fish, but no more some fish
+		-
+-make two more worlds (deep water caves and hel)
+
+player goals and gameplay:
+- explore
+- collect fish
+- money
+- minigame highscore (maybe 4-6 minigames (keep them small and simple but if possible allow for an endgame))
+
+fish types that i haven drawn yet:
+	l=used to sort story fish to real fish
+	c=collectable, only 1 can be caught, unsellable
+	rr=very rare in certain areas but more than one
+	r=rare in certian areas
+	a=in certain areas (>7%)
+	at least 50 fish but want more than 120 fish (acnh: 80+40)
+
+-anchoive a
+-bass a
+-sardine a
+-chub mackrel a
+
+-duckfish(the utimitle fish)-l
+	go though maze
+	maze need key to unlock
+	fish needs special bait
+	lake on mountain (maybe)
+
+-ranbow fish(make refercnes to book)-l
+-big fish(the fish in the icon and welcome)-l
+-boarfish c
+-flying fish a
+-dab r
+-tuna a
+-salmon (try to put nodes in rivers) a
+make bear dercation for^^^
+-king salmon r
+-trout a
+-cod a
+-koi r
+-goldfish r
+-catfish a
+-whaleshark c
+-shark rr
+-plackton rr
+-crab a
+-lobster r
+-sponge rr
+-handfish r
+-pike r
+-eel r
+-sword fish c
+-kingfish r
+-rockling a
+-blobfish r
+
+story???:
+- old man tell you that a exertenal being took everything that exist here from a 
+  place called "earth" and inpparently that being forgot to scale everything correctly (ducks
+  the size of coco trees as an e.g) (refering to dev being lazy)
+
+
+NPC iDEa:
+-kingfisher
+ -minigame
+
+i dont think i will ever finish this game
+
+
+
+
+im cooked, tryed to type sea, typed self
+2-procastane so hard, one letter a day, cover
+
+
+
