@@ -84,12 +84,13 @@ doto list:
  -golfcart respawn d
  -fix black mariln rarity d
  -fix golf cart part not disappearing d
- -remove golf cart upgrading and buff golf cartd
+ -remove golf cart upgrading and buff golf cart d
+ -add saving (to fuel and golf cart parts) d
 
- -add saving (to fuel and golf cart parts)
  -check if node saves are working
  -fix speech highlights
  -undercomp the night (remove the light around duck)
+ -tutoral
 -add rod
 -add duckfish
 -add maybe 5 more fish
