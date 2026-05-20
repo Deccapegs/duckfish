@@ -42,14 +42,14 @@
         },
         "map.tmj": {
             "expandedObjectLayers": [
-                4,
-                3
+                3,
+                4
             ],
             "scale": 0.33,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 1672.7272727272727,
-                "y": 1601.5151515151515
+                "x": 1674.2424242424245,
+                "y": 1603.030303030303
             }
         },
         "map.tmj#coco": {
