@@ -145,14 +145,12 @@ def get_house_rect(img,height=1/3,init_pos=[0,0],check_heights=[0]):
 			pos[0]=i
 			size[0]-=i
 			break
-	#print(size,"init")
 
 	for i in range(size[0]):
 		check_pos[0]=size[0]-i-1+offset
 		colour=img.get_at(check_pos)
 		if (alpha:=colour[3])==255:
 			size[0]-=i
-			print(size,i)
 			break
 	new_height=1
 	if height<1:
@@ -161,7 +159,6 @@ def get_house_rect(img,height=1/3,init_pos=[0,0],check_heights=[0]):
 		new_height=height
 	pos[1]-=new_height#math is not spagagtti
 	size[1]=new_height
-	print(size,"new")
 	rect=pygame.Rect(add_poses(pos,init_pos),size)
 	return rect
 def get_tile_pos(pos,tile_size=32):

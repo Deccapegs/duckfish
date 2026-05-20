@@ -12,7 +12,6 @@ class Maps():
 
 def convert_tiled(map_,width,height):
 	m=[]
-	#print(map_)
 	for i in range(1,height+1):
 		m.append(map_[slice(width*(i-1),width*(i))])
 
@@ -22,7 +21,6 @@ def convert_obj(data):
 	return list_
 def create_world():
 	layer_num=3
-	#print(map_data)
 	layer_data=convert_tiled(map_data["layers"][layer_num]["data"],map_data["layers"][layer_num]["width"],map_data["layers"][layer_num]["height"])
 	# 0=water
 	# 1=wooddeck
@@ -120,7 +118,6 @@ def create_world():
 			 """
 	return [layer1]
 def get_obj_data():
-	#print(map_data["layers"][1]["name"])
 	return convert_obj(map_data["layers"][1]["objects"])
 def get_derc_obj_data():
 	return convert_obj(map_data["layers"][2]["objects"])
