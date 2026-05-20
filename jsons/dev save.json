@@ -10,12 +10,12 @@
         "pink_rockling": 1,
         "rockling": 0,
         "pink_salmon": 0,
-        "yellow_perch": 6986,
+        "yellow_perch": 6970,
         "black_marlin": 24,
         "duckfish": 0,
         "rotting_wood": 5,
         "yellow_mold": 7,
-        "golf_cart_part": 959
+        "golf_cart_part": 975
     },
     "total": {
         "copper": -608742554432414992990,
@@ -30,65 +30,78 @@
         "placebridge": 48,
         "rotting_wood": 5,
         "yellow_mold": 1,
-        "golf_cart_part": 278,
+        "golf_cart_part": 294,
         "duckfish": 32,
         "black_marlin": 30,
         "yellow_perch": 18
     },
     "placebridge": [],
     "pos": [
-        1122,
-        1164
+        703,
+        748
     ],
     "node densities": [
         {
-            "anchovy": 9,
-            "chub_mackerel": 7,
+            "anchovy": 7,
+            "chub_mackerel": 6,
             "sardine": 3
         },
         {
-            "anchovy": 14,
+            "anchovy": 13,
             "sardine": 3
         },
         {
-            "anchovy": 20,
-            "sardine": 0
+            "anchovy": 16,
+            "sardine": 2
         },
         {
-            "anchovy": 5,
-            "bass": 8,
-            "sardine": 5
+            "anchovy": 4,
+            "bass": 9,
+            "sardine": 3
         },
         {
-            "pink_rockling": 8,
-            "rockling": 8
+            "pink_rockling": 9,
+            "rockling": 7
         },
         {
-            "pink_salmon": 20,
+            "pink_salmon": 17,
             "anchovy": 9
         },
         {
-            "pink_salmon": 24,
-            "anchovy": 5
+            "pink_salmon": 22,
+            "anchovy": 4
         },
         {
             "black_marlin": 1
         },
         {
-            "yellow_perch": 7
+            "yellow_perch": 6
         },
         {
-            "yellow_perch": 7
+            "yellow_perch": 6
         }
     ],
     "golf cart": {
         "pos": [
-            787.7000000000156,
-            998.1999999999958
+            632.3999999999775,
+            629.2000000000045
         ],
-        "fuel": 18900,
+        "fuel": 13705,
         "rate": 5,
         "accel": 0.13,
         "level": 0
+    },
+    "npcs_not_popped": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": true,
+        "7": true,
+        "8": true,
+        "9": false,
+        "10": true
     }
 }
