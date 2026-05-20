@@ -231,7 +231,6 @@ class world():
 			a=Tile(1,4,pos,lists=[self.tilelist,self.placebridgelist],rectlists=[self.nonwallrectlist],img=image.placebridge,child=Tile(0,5,[pos[0],pos[1]+32],lists=[self.tilebackdecrolist],img=image.placebridge,sheetpos=(0,-32)))
 			a.initother()
 		for data in self.obj_data:
-			print(data,t.duckling)
 			if data[0] in [27,28]:
 				obj(data,lists=[game.drawlist])
 			elif data[0]==29:
@@ -499,7 +498,7 @@ class images():
 		self.golf_cart_part=pygame.image.load("imgs/golf cart part.png").convert_alpha()
 		self.golf_cart=pygame.image.load("imgs/golf cart.png").convert_alpha()
 		self.v12_engine=pygame.image.load("imgs/v12 engine.png").convert_alpha()
-		self.cogs=pygame.image.load("imgs/v12 engine.png").convert_alpha()
+		self.cogs=pygame.image.load("imgs/cog.png").convert_alpha()
 		self.golf_cart_no_duck=pygame.image.load("imgs/golf cart no duck.png").convert_alpha()
 		self.npcsheet=pygame.image.load("imgs/npcs.png").convert_alpha()
 		self.duckling=get_surf_from_sheet(self.npcsheet,(0,0),(16,14))
@@ -759,7 +758,6 @@ class fishingnode():
 			if len(self.fishs)<self.fish_limit:
 				angle=random.random()*math.pi*2
 				key=dict_choice(self.truedensity)
-			#	print(self.truedensity,key) if "black_marlin" in self.density else None
 				if key!=None:
 					Fish(add_poses(self.pos,[math.cos(angle)*self.range*32,math.sin(angle)*self.range*32]),node=self,type=key)
 					self.truedensity[key]-=1
@@ -817,7 +815,6 @@ class Fish():
 				self.dest_angle=math.atan2(-(self.pos[1]-self.dest[1]),self.pos[0]-self.dest[0])
 		if get_dist(self.pos,game.player.fishingline.line[1])<=self.size and game.player.fishingline.landed:
 			
-			print(self.touch_timer.timer)
 			if self.touch_timer.timer<=15:
 				self.touch_timer.update()
 			elif c.mouse[0][0]==True and self.touch_timer.timer>=15:
@@ -875,7 +872,7 @@ class rope():
 		self.parent=game.player
 class Golf_cart():
 	def __init__(self):
-		self.fuel=24000
+		self.fuel=game.save.read()["golf cart"]["fuel"]
 		self.max_fuel=int(self.fuel)
 		self.rate=5
 		self.accel=0.13
@@ -1156,7 +1153,6 @@ class inventory():
 					self.selected_box=[make_surf(self.items[item]["rect"].size,(0,0,0,64),pygame.SRCALPHA),(self.items[item]["rect"].topleft[0]-6,self.items[item]["rect"].topleft[1]-6)]
 			except KeyError:
 				pass
-		print(self.items["mallet"]["rect"].topleft)
 		for type in self.itemtypes:
 			try:
 				self.items[type]
@@ -1165,11 +1161,9 @@ class inventory():
 			else:
 				if self.selected!=type:
 					if check_hover(type):
-						#print(type,self.selected)
 						self.hover_box=[make_surf(self.items[type]["rect"].size,(0,0,0,32),pygame.SRCALPHA),(self.items[type]["rect"].topleft[0]-6,self.items[type]["rect"].topleft[1]-6)]
 						break
 					if check(type):
-						print(type,self.selected,"a")
 						self.selected_box=[make_surf(self.items[type]["rect"].size,(0,0,0,64),pygame.SRCALPHA),(self.items[type]["rect"].topleft[0]-6,self.items[type]["rect"].topleft[1]-6)]
 						break
 		else:
@@ -1625,7 +1619,13 @@ class Player():
 				
 class npc():
 	def __init__(self,type,pos,imgs:dict=None):
-		print("a")
+		self.id=len(game.npcdict)
+		game.npcdict[self.id]=self
+		try:
+			self.popped=game.save.read()["npcs_not_popped"][str(self.id)]
+		except KeyError:
+			print(self.id,type,pos)
+			self.popped=False			
 		self.type=type
 		self.pos=pos
 		self.rect=pygame.Rect(pos,(1,1))
@@ -1767,6 +1767,8 @@ class npc():
 		game.npclist.append(self)
 		game.drawlist.append(self)
 	def update(self):
+		if self.popped:
+			self.pop()
 		#try:
 		self.s_update()
 		"""
@@ -1829,7 +1831,9 @@ class npc():
 			except ValueError:
 				pass
 		self.etotalk.pop()
-		del self
+		self.popped=True
+		print(self in game.npcdict.values())
+
 class Speech():
 	def __init__(self):
 		self.box=image.textbox
@@ -2046,6 +2050,7 @@ class Game():
 		self.nodelist=[]
 		self.particles=[]
 		self.npclist=[]
+		self.npcdict={}
 		self.frontdecrlist=[]
 		self.waves=[]
 		self.fishs=[]
@@ -2153,6 +2158,7 @@ class Game():
 		self.diamessage=message
 
 def get_save():
+	print({key:val.popped for key,val in game.npcdict.items()})
 	return {
 		"inventory":game.player.inventory,
 		"total":game.player.total,
@@ -2165,7 +2171,8 @@ def get_save():
 		"rate":game.golf_cart.rate,
 		"accel":game.golf_cart.accel,
 		"level":game.golf_cart.level
-		}
+		},
+		"npcs_not_popped":{int(key):val.popped for key,val in game.npcdict.items()}
 			}
 def make_item(name:str,place_after:str,catergory:str,cost:int,refill:int=0,para:list=[]):
 	f=file("jsons/new.json")
