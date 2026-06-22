@@ -1,5 +1,6 @@
 import pygame, random,math,json,sys,os
 from random import randint
+from collections import Counter
 pygame.init()
 screen_width=236
 screen_height=118
@@ -438,6 +439,96 @@ def pallettes_swap(surf,colour_pairs,alpha_key_=(0,0,0)):
 	for c,d in colour_pairs:
 		surf=pallette_swap(surf,c,d,alpha_key=alpha_key_)
 	return surf
+class Tutorial():
+	def __init__(self):
+		self.tutorials_shown=game.save.read()["tutorials_shown"]#{"speed tech":["bhop"]*90}
+		self.change(["woah"]*90)
+		self.delay_args={
+		"text":[],
+		"name":None,
+		"reshow":False
+		}
+		self.start_change=False
+		self.delay=60
+		self.delay_timer=timer(int(self.delay))
+
+	def change(self,text,name=None,reshow=False):
+		try:
+			game.change_stage("tutorial") #if game.stage!="tutorial" else game.change_stage("play")
+		except NameError:
+			pass
+		if name in self.tutorials_shown.keys() and not reshow:
+			game.change_stage(game.last_stage)
+			return "woah"
+
+		elif name != None:
+			self.tutorials_shown[name]=text
+			self.current_tutorial=name
+		else:
+			self.current_tutorial=None
+		self.para=Para(text)
+		self.bg=pygame.Surface((screen_width,screen_height)).convert()
+		self.bg.fill((0,0,0))
+		bg_rect=self.bg.get_rect(center=(screen_width/2,screen_height/2))
+		self.bg_draw_pos=bg_rect.topleft
+		self.para_pos=center_surf(self.para.img)
+		self.exit_size=(10,10)
+		self.exit_y_max=40
+		self.exit_img=make_surf(self.exit_size,(255,255,255))
+		self.exit_pos=center_surf(self.exit_img)
+		self.exit_pos[1]+=min(self.para.img.get_height()+10+self.exit_size[1],self.exit_y_max)
+		self.exit=Button(self.exit_img,self.exit_pos)
+	def update(self):
+		self.exit.update()
+		
+		if self.exit.pressed:
+			game.tutorial_menu.add_tutorial(self.current_tutorial)
+			game.change_stage("tutorial") if game.last_stage=="tutorial" else game.change_stage(game.last_stage)
+			#game.tutorial_menu.tutorial_buttons[self.current_tutorial]=Button(text.render(self.current_tutorial),)
+	def always_update(self):
+		if self.start_change:
+			self.delay_timer.update()
+			if self.delay_timer.tick:
+				self.start_change=False
+				self.change(*self.delay_args.values())
+	def draw(self):
+		screen.blit(self.bg,self.bg_draw_pos)
+		self.exit.draw()
+		screen.blit(self.para.img,self.para_pos)
+	def delay_change(self,text,name=None,reshow=False,delay=60):
+		self.delay_args={
+		"text":text,
+		"name":name,
+		"reshow":reshow
+		}
+		print(self.delay_args)
+		self.delay_timer=timer(int(delay))
+		self.delay=60
+		self.start_change=True
+
+class Tutorial_menu():
+	def __init__(self):
+		self.tutorial=game.tutorial
+		self.tutorials_shown=self.tutorial.tutorials_shown
+		self.tutorial_buttons={}
+		self.offset=[3,3]
+		self.dist=8
+		for i,key in enumerate(self.tutorials_shown.keys()):
+			self.tutorial_buttons[key]=Button(text.render(key),[self.offset[0],self.offset[1]+i*self.dist])
+	#def get_tutorials(self):
+	#	self.__init__()
+	def add_tutorial(self,name):
+		if name == None:
+			return "no"
+		self.tutorial_buttons[name]=Button(text.render(name),[self.offset[0],self.offset[1]+len(self.tutorial_buttons)*self.dist])
+	def update(self):
+		for key,button in self.tutorial_buttons.items():
+			button.update()
+			if button.pressed:
+				self.tutorial.change(self.tutorials_shown[key],reshow=True)
+	def draw(self):
+		for button in self.tutorial_buttons.values():
+			button.draw()
 class images():
 	def __init__(self):
 		self.iconpleasework=pygame.image.load("imgs/icon.png").convert_alpha()
@@ -653,7 +744,7 @@ class text():
         return textsurf
 text=text()
 class Para():
-	def __init__(self,text_:list,height=7):
+	def __init__(self,text_:list,height=6,width=7):
 		self.text=text_
 		if text_==[]:
 			self.para=pygame.Surface((1,1),pygame.SRCALPHA).convert_alpha()
@@ -728,7 +819,7 @@ def controller(flag="key"):
 		return None
 
 class fishingnode():
-	def __init__(self,pos:list,density:list,range_=4,respawn_rate=60,fish_limit=5):
+	def __init__(self,pos:list,density:list,range_=4,respawn_rate=60,fish_limit=5,regen=300):
 		self.pos=pos
 		self.density=density#init amount
 		self.truedensity=dict(density)#current amount
@@ -739,10 +830,10 @@ class fishingnode():
 		self.sin=Sin(0.01,7,start=random.random()*math.pi*7)
 		self.sin2=Sin(0.007,12,start=random.random()*math.pi*12)
 		self.timer=timer(respawn_rate)
+		self.regen_timer=timer(regen)
 		game.nodelist.append(self)
 	def initother(self,density):
-		self.density=density
-		self.truedensity=dict(density)	
+		self.truedensity=dict(density)
 	def add_fish(self):
 		a=random.random()*sum(self.density.values())
 		fish=[0,0]
@@ -754,18 +845,23 @@ class fishingnode():
 			fish[1]=fish[0]
 	def update(self):
 		self.timer.update()
+		self.regen_timer.update()
+		if self.regen_timer.tick:
+			self.add_fish()
 		if self.timer.tick:
 			if len(self.fishs)<self.fish_limit:
 				angle=random.random()*math.pi*2
 				key=dict_choice(self.truedensity)
 				if key!=None:
-					Fish(add_poses(self.pos,[math.cos(angle)*self.range*32,math.sin(angle)*self.range*32]),node=self,type=key)
+					ran=random.random()
+					Fish(add_poses(self.pos,[math.cos(angle)*self.range*32*ran,math.sin(angle)*self.range*32*ran]),node=self,type=key)
 					self.truedensity[key]-=1
 		for fish in self.fishs:
 			fish.update()
 		self.fishs=[fish for fish in self.fishs if not fish in self.remove_fishs]
 		self.remove_fishs=[]
-
+	#def spawn_fish(self,fish):
+	#	if fish==""
 	def draw(self):
 		self.sin.update()
 		pygame.draw.circle(screen,(40,90,190),withscroll(self.pos),self.range*32+self.sin.val-self.sin.height-10)
@@ -775,8 +871,14 @@ class fishingnode():
 	def draw_fish(self):
 		for fish in self.fishs:
 			fish.draw()
+	def get_all_fish(self):
+		fishies=Counter([fish.type for fish in self.fishs])
+		fishies.update(Counter(self.truedensity))
+		return dict(fishies)
+
+
 class Fish():
-	def __init__(self,pos,size=7,range_=30,run_speed=0.5,interval=600,type="duckfish",node:fishingnode=None):
+	def __init__(self,pos,size=7,range_=40,run_speed=0.5,interval=600,type="duckfish",node:fishingnode=None,attraction_speed=0.7):
 		self.pos=list(pos)
 		self.size=float(size)
 		self.ogsize=float(size)
@@ -791,7 +893,7 @@ class Fish():
 		self.touch_timer=timer(60)
 		self.curve_mult=curve_mult()
 		self.type=type
-		self.last_returned=0
+		self.attraction_speed=attraction_speed
 		game.fishs.append(self)
 		self.node=node
 		if node!=None:
@@ -811,7 +913,7 @@ class Fish():
 				self.dest_angle=math.atan2(-(self.pos[1]-self.dest[1]),self.pos[0]-self.dest[0])
 			else:
 				
-				self.dest=list(self.node.pos)
+				self.dest=add_poses(list(self.node.pos),(self.node.range*32*(random.random()-0.5),self.node.range*32*(random.random()-0.5)))
 				self.dest_angle=math.atan2(-(self.pos[1]-self.dest[1]),self.pos[0]-self.dest[0])
 		if get_dist(self.pos,game.player.fishingline.line[1])<=self.size and game.player.fishingline.landed:
 			
@@ -823,18 +925,19 @@ class Fish():
 				self.size=self.ogsize+2
 		elif get_dist(self.pos,game.player.fishingline.line[1])<=self.size+self.range and game.player.fishingline.landed:
 			angle=math.atan2((game.player.fishingline.line[1][1]-self.pos[1]),game.player.fishingline.line[1][0]-self.pos[0])
-			self.pos[0]+=math.cos(angle)*self.run_speed*self.range/get_dist(self.pos,game.player.fishingline.line[1])/4
-			self.pos[1]+=math.sin(angle)*self.run_speed*self.range/get_dist(self.pos,game.player.fishingline.line[1])/4
+			self.pos[0]+=math.cos(angle)*self.attraction_speed*self.range/get_dist(self.pos,game.player.fishingline.line[1])/4
+			self.pos[1]+=math.sin(angle)*self.attraction_speed*self.range/get_dist(self.pos,game.player.fishingline.line[1])/4
 		else:
 			self.touch_timer.reset()
 		if self.touch_timer.timer<=15:
-			self.pos[0]+=((math.cos(self.dest_angle))*(-self.curve_mult.val-0.5))/4
-			self.pos[1]-=((math.sin(self.dest_angle))*(-self.curve_mult.val-0.5))/4
+			self.pos[0]+=((math.cos(self.dest_angle))*(-self.curve_mult.val-0.5))*self.run_speed/4
+			self.pos[1]-=((math.sin(self.dest_angle))*(-self.curve_mult.val-0.5))*self.run_speed/4
 			self.size=self.ogsize
 	def draw(self):
 		pygame.draw.circle(screen,(20,65,170),withscroll(self.pos),self.size)
 		#screen.set_at(withscroll(self.dest),(255,0,255))
 	def pop(self):
+		game.sell_tutorial()
 		game.player.add_inventory(self.type,1,with_notice=True)
 		self.node.remove_fishs.append(self)
 
@@ -1175,6 +1278,8 @@ class inventory():
 			pass
 		else:
 			if self.selected in self.fishtypes:
+				
+				#tut_buy=lambda a= ():None
 				if self.sellboxs["1"]["rect"].collidepoint(mouse_get_pos()) and self.mouse==[False,True]:
 					if self.parent.inventory[self.selected]-1!=-1:
 						self.parent.inventory[self.selected]-=1
@@ -1182,20 +1287,28 @@ class inventory():
 						self.parent.total["copper"]+=game.sellinfo["fish"][self.selected]
 						self.refresh_single(self.selected)
 						self.refresh_single("copper")
+						#tut_buy()
+						game.buy_tutorial()
 				elif self.sellboxs["50%"]["rect"].collidepoint(mouse_get_pos()) and self.mouse==[False,True]:
 					self.parent.inventory["copper"]+=(x:=game.sellinfo["fish"][self.selected]//2*self.parent.inventory[self.selected])
 					self.parent.total["copper"]+=x
 					self.parent.inventory[self.selected]//=2
 					self.refresh_single(self.selected)
 					self.refresh_single("copper")
+					#tut_buy()
+					game.buy_tutorial()
 				elif self.sellboxs["all"]["rect"].collidepoint(mouse_get_pos()) and self.mouse==[False,True]:
 					self.parent.inventory["copper"]+=(x:=game.sellinfo["fish"][self.selected]*self.parent.inventory[self.selected])
 					self.parent.total["copper"]+=x
 					self.parent.inventory[self.selected]=0
 					self.refresh_single(self.selected)
 					self.refresh_single("copper")
+					#tut_buy()
+					game.buy_tutorial()
 		self.hold_box.update()
 	def hold_item(self,item):
+		if self.parent.inventory[item]<=0:
+			return None
 		game.stage="play"
 		self.last_held=str(item)
 		game.player.hold_item(item)
@@ -1317,7 +1430,7 @@ class Player():
 		self.money=0
 	def update(self):
 		self.key=controller(flag="key")
-		if self.key[pygame.K_0]:
+		if self.key[pygame.K_0] and game.path=="jsons/dev save.json":
 			self.speed=[14,14]
 		else:
 			self.speed=[1,1]
@@ -1624,7 +1737,6 @@ class npc():
 		try:
 			self.popped=game.save.read()["npcs_not_popped"][str(self.id)]
 		except KeyError:
-			print(self.id,type,pos)
 			self.popped=False			
 		self.type=type
 		self.pos=pos
@@ -1652,8 +1764,8 @@ class npc():
 			self.s_update=s
 			def s_s():
 				game.speech.update_speech("how can i help you?",{
-					'2 copper: 3 placebridge':[{"placebridge":3},{"copper":2},"cont"],
-					"4 copper 2 bass:1 mallet":[{"mallet":1},{"copper":4,"bass":2},"cont"],
+					'3 copper: 3 placebridge':[{"placebridge":3},{"copper":3},"cont"],
+					"20 copper 4 bass:1 mallet":[{"mallet":1},{"copper":20,"bass":4},"cont"],
 					"bye":[{},{},"exit"]
 					
 					})
@@ -1685,8 +1797,8 @@ class npc():
 			def s_s():
 
 				if game.golf_cart.pos[0]<=-696:
-					game.speech.update_speech("how can i help you?",{
-						'fix the golf cart[3 gc parts] ':[{"golf_cart":1},{"golf_cart_part":3},"congrates"],
+					game.speech.update_speech(["if you got 3 golf cart parts","and 50 coppers i can make you a golf cart"],{
+						'ooh ok ':[{"golf_cart":1},{"golf_cart_part":3,"copper":50},"congrates"],
 						"bye":[{},{},"exit"]	
 						})
 				elif game.diamessage=="congrates":
@@ -1739,7 +1851,7 @@ class npc():
 						{"okay! (accept quest)":[{},{},"accept_marlin_quest_exit"],
 						"i'll pass":[{},{},"exit"]})
 				elif self.state=="wait":
-					game.speech.update_speech(["the marlins are at the ","lake on the left island"],
+					game.speech.update_speech(["the marlins are at the ","lake on the between the islands"],
 						{
 						"i caught it!  [give 1 black marlin] ":[{"copper":25},{"black_marlin":1},"black_marlin_quest_complete_exit"],
 						"okay":[{},{},"exit"]
@@ -1832,7 +1944,6 @@ class npc():
 				pass
 		self.etotalk.pop()
 		self.popped=True
-		print(self in game.npcdict.values())
 
 class Speech():
 	def __init__(self):
@@ -1883,19 +1994,22 @@ class Speech():
 					s=get_surf_from_sheet(self.rboxsheet,(-8,-8),(8,8))
 				self.rbox.blit(s,(x,y))
 	def update(self):
-		self.hover_surf={"surf":pygame.Surface((1,1),pygame.SRCALPHA).convert_alpha(),"pos":[0,0]}
+		#self.hover_surf={"surf":pygame.Surface((1,1),pygame.SRCALPHA).convert_alpha(),"pos":[0,0]}
 		m=(mouse_get_pos(),pygame.mouse.get_pressed())
 		self.mpressed[1]=self.mpressed[0]
 		self.mpressed[0]=m[1][0]
 		for i in self.rtext:
 			a=i[1].collidepoint(m[0])
 			if a==True:
+				self.hover_surf={"surf":make_surf(i[1].size,(64,64,64,64),pygame.SRCALPHA),"pos":i[1].topleft}
 				self.mdownrect=i[1]
 				break
+			else:
+				self.hover_surf={"surf":pygame.Surface((0,0)).convert(),"pos":(0,0)}
 		if self.mpressed==[True,False]:
 			for r in self.rtext:
 				if r[1].collidepoint(m[0]):
-					self.hover_surf={"surf":make_surf(r[1].size,(64,64,64,64),pygame.SRCALPHA),"pos":r[1].topleft}
+					
 					if self.mdownrect==r[1]:
 						for take in r[2][1]:
 							if r[2][1][take]>game.player.inventory[take]:
@@ -1918,7 +2032,7 @@ class Speech():
 								game.player.add_inventory(give,r[2][0][give])
 						try:
 							if give=="placebridge":
-								Notice(f"placebridge +1",pygame.transform.scale(get_surf_from_sheet(image.placebridge,(0,0),(32,32)),(16,16)))
+								Notice(f"placebridge +3",pygame.transform.scale(get_surf_from_sheet(image.placebridge,(0,0),(32,32)),(16,16)))
 							else:
 								Notice(f"{give} +{r[2][0][give]}",getattr(image,give))
 						except UnboundLocalError:
@@ -1988,12 +2102,12 @@ class frontdecr():
 class Daynight():
 	def __init__(self):
 		self.timer=timer(60*120)
-		self.img=make_surf((screen_width,screen_height),(55,45,40))
+		self.img=make_surf((screen_width*1.5,screen_height*1.5),(55,45,40))
 		self.disimg=self.img.copy()
-		circle_size=40
-		self.player_light=make_circle_surf(circle_size,(20,20,5))
-		self.light_pos=(screen_width/2-circle_size,screen_height/2-circle_size-5)
-		self.disimg=make_hole(self.disimg,self.player_light,self.light_pos)
+		#circle_size=40
+		#self.player_light=make_circle_surf(circle_size,(20,20,5))
+		#self.light_pos=(screen_width/2-circle_size,screen_height/2-circle_size-5)
+		#self.disimg=make_hole(self.disimg,self.player_light,self.light_pos)
 	def update(self):
 		self.timer.update()
 	def draw(self):
@@ -2001,7 +2115,7 @@ class Daynight():
 			return
 		screen.blit(self.disimg,(0,0),special_flags=pygame.BLEND_RGB_SUB)
 
-		screen.blit(self.player_light,self.light_pos,special_flags=pygame.BLEND_RGB_ADD)
+	#	screen.blit(self.player_light,self.light_pos,special_flags=pygame.BLEND_RGB_ADD)
 class Map:
 	def __init__(self,data,bg_colour=(50,100,200),scale=8):
 		self.data=data
@@ -2059,9 +2173,12 @@ class Game():
 		self.loaded_decrs=[]
 		self.loaded_drawlist=[]
 		self.stage="play"
+		self.last_stage="tutorial_menu"
+
 		self.in_dialogue=None
 		self.npc_in_dialogue=None
-		self.save=file("jsons/dev save.json")
+		self.path="jsons/save.json"
+		self.save=file(self.path)
 		self.diamessage="none"
 		self.sellinfo=file("jsons/sell info.json").read()
 		self.fuel_info=file("jsons/refill info.json").read()
@@ -2073,6 +2190,9 @@ class Game():
 		self.mapping=False
 		#types
 	def initother(self):
+		self.tutorial=Tutorial()
+		self.tutorial_menu=Tutorial_menu()
+
 		self.world=world()
 		self.world.initother()
 		self.waveables=[tile.rect for tile in self.world.tilelist if tile not in self.world.waterlist]
@@ -2098,12 +2218,12 @@ class Game():
 			7
 			)
 		
-		,fishingnode((960, 678),
+		,fishingnode((1000, 678),
 			{
-			"anchovy":15,
+			"anchovy":150,
 			"sardine":5
 			},
-			range_=4,fish_limit=7)
+			range_=2,fish_limit=7)
 		
 		,fishingnode((767, 800),
 			{
@@ -2147,24 +2267,36 @@ class Game():
 			},3)
 		,fishingnode((797, 1127),{
 			"yellow_perch":10
-			},3)]
+			},3),fishingnode((379, 1214),{"duckfish":3},range_=0.5,regen=1200)]
 		
 		try:
 			a=self.save.read()["node densities"]
-			(node.initother(a[i]) for i,node in enumerate(self.nodelist)) 
+			for i,node in enumerate(self.nodelist):
+				node.initother(a[i])
+			
+
 		except KeyError:
+			pass
+		except IndexError:
 			pass
 	def set_diamessage(self,message:str):
 		self.diamessage=message
-
+	def change_stage(self,stage):
+		if self.stage== stage:
+			return
+		self.last_stage=self.stage
+		self.stage=stage
+	def sell_tutorial(self):
+		self.tutorial.delay_change(["nice work on your first fish!","sell fish by pressing the"," inventory button[t] and choose the","amount of fish to sell"],"sell fish")
+	def buy_tutorial(self):
+		game.tutorial.delay_change(["   nice work on your fisrt coppers!","you can use this coppers"," to buy 'placebridges' at the stall"],"buy placebridge")
 def get_save():
-	print({key:val.popped for key,val in game.npcdict.items()})
 	return {
 		"inventory":game.player.inventory,
 		"total":game.player.total,
 		"placebridge":[tile.pos for tile in game.world.placebridgelist],
 		"pos":game.player.pos,
-		"node densities":[node.truedensity for node in game.nodelist],
+		"node densities":[node.get_all_fish() for node in game.nodelist],
 		"golf cart":{
 		"pos":game.golf_cart.pos,
 		"fuel":game.golf_cart.fuel,
@@ -2172,7 +2304,8 @@ def get_save():
 		"accel":game.golf_cart.accel,
 		"level":game.golf_cart.level
 		},
-		"npcs_not_popped":{int(key):val.popped for key,val in game.npcdict.items()}
+		"npcs_not_popped":{key:val.popped for key,val in game.npcdict.items()},
+		"tutorials_shown":game.tutorial_menu.tutorials_shown
 			}
 def make_item(name:str,place_after:str,catergory:str,cost:int,refill:int=0,para:list=[]):
 	f=file("jsons/new.json")
@@ -2221,7 +2354,7 @@ game.initother()
 #make_item("duckfish","pink_salmon","fish",x:=-(2**64),x,[ "so you've found me","[insert lore text]"])
 testnotice=Notice("welcome!",image.bigfish)
 coco=decr(image.coconut_tree,[31*32+10,15*32])
-
+game.tutorial.change(["welcome to the","world of duckfish!","cast your rod to fish","fish where the fish are"],"fishing")
 run= True
 while run==True:
 	#game.scroll=[0,0]
@@ -2240,7 +2373,7 @@ while run==True:
 					game.stage="inventory"
 					game.inventory.refresh()
 				else:
-					game.stage='play'
+					game.change_stage('play')
 				
 			elif event.key==pygame.K_f:
 				game.save.overwrite(get_save())
@@ -2248,11 +2381,14 @@ while run==True:
 			elif event.key==pygame.K_q:
 				game.inventory.hold_item(game.inventory.last_held)
 			elif event.key==pygame.K_ESCAPE:
-				pygame.quit()
-				game.save.overwrite(get_save())
-				sys.exit()
+				if game.stage=="tutorial":
+					pass
+				elif game.stage=="tutorial_menu":
+					game.change_stage("play")
+				else:
+					game.change_stage("tutorial_menu")
 			elif event.key==pygame.K_r:
-				game.stage="map" if not game.stage=="map" else "play"
+				game.change_stage("map") if not game.stage=="map" else game.change_stage("play")
 		elif event.type == pygame.MOUSEWHEEL:
 			scrolling=True
 			pfasd=[-event.x*2,event.y*2]
@@ -2262,7 +2398,7 @@ while run==True:
 	else:
 		c.mouse_scroll=[0,0]
 	c.update()
-
+	game.tutorial.always_update()
 	if game.stage== "play":
 		game.daynight.update()
 		if random.random()>0.93 and len(game.waves)<5:
@@ -2272,8 +2408,8 @@ while run==True:
 		for node in game.nodelist:
 			node.update()
 			node.draw2()
-			if random.random()<1/1200:
-				node.add_fish()
+			#if random.random()<1/1200:
+		#		node.add_fish()
 		for node in game.nodelist:
 			node.draw()	
 		for node in game.nodelist:
@@ -2339,6 +2475,13 @@ while run==True:
 	elif game.stage=="map":
 		game.map.update()
 		game.map.draw()
+	elif game.stage=="tutorial":
+		game.tutorial.update()
+		game.tutorial.draw()
+	elif game.stage=="tutorial_menu":
+		screen.fill((0,0,0))
+		game.tutorial_menu.update()
+		game.tutorial_menu.draw()
 	#c=pygame.Surface((500,500))
 #	c.fill((70,70,50))
 #	screen.blit(c,special_flags=pygame.BLEND_RGB_SUB)

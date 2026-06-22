@@ -86,11 +86,25 @@ doto list:
  -fix golf cart part not disappearing d
  -remove golf cart upgrading and buff golf cart d
  -add saving (to fuel and golf cart parts) d
+ -undercomp the night (remove the light around duck) d
+ -fix negitve placebridge and fish d
+ -check if node saves are working d
+ -fix speech highlights d
+ -tutorial delay
 
- -check if node saves are working
- -fix speech highlights
- -undercomp the night (remove the light around duck)
  -tutoral
+ -duck map loaction
+ -add mouse side scrolling in inventory
+ -repostion fishing nodes at starter island
+ -fix placebrigh sorting
+ -fix fishing on cliff faces
+-nerf yellow perch nodes
+-lwk nerf all the nodes
+-add more reasons to earn coppers
+ -bait upgrades?
+ -golf acrt needs some money
+ -movement boost shrine
+ -night market god potion
 -add rod
 -add duckfish
 -add maybe 5 more fish
