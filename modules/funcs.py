@@ -1,4 +1,4 @@
-from __main__ import pygame,screen_height,screen_width,window,json,random,chunk_size
+from __main__ import pygame,screen_height,screen_width,window,json,random,chunk_size,screen
 import math
 game=None
 class Func:
@@ -166,6 +166,7 @@ def get_tile_pos(pos,tile_size=32):
 
 def get_chunk_pos(pos,tile=False):
 	return [math.floor(pos[0]/32/chunk_size[0]),math.floor(pos[1]/32/chunk_size[1])]
-
-
-
+	
+def center_surf(surf):
+	rect=surf.get_rect(center=(screen_width/2,screen_height/2))
+	return list(rect.topleft)
