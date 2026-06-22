@@ -38,8 +38,7 @@
     },
     "placebridge": [],
     "pos": [
-        960,
-        352
+        766, 686
     ],
     "node densities": [
         {
@@ -81,6 +80,31 @@
         ],
         "fuel": 36000,
         "rate": 10,
-        "accel": 0.2
+        "accel": 0.2,
+        "level":0
+    },
+    "npcs_not_popped": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "10": false
+    },
+    "tutorials_shown":{
+        "controls":[
+            "wasd: move",
+            "m1: cast fishing line",
+            "t: inventory",
+            "r: map",
+            "g: unhold item",
+            "q: quick hold last item",
+            "f: save game"
+            ]
     }
 }

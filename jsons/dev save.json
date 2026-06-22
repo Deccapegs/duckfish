@@ -2,7 +2,7 @@
     "inventory": {
         "copper": -608742554432414992454,
         "mallet": 11,
-        "placebridge": 99999999999999999999999999999999999999999999999999545,
+        "placebridge": 99999999999999999999999999999999999999999999999999526,
         "anchovy": 717,
         "sardine": 8,
         "bass": 1,
@@ -12,7 +12,7 @@
         "pink_salmon": 0,
         "yellow_perch": 6970,
         "black_marlin": 24,
-        "duckfish": 0,
+        "duckfish": 16,
         "rotting_wood": 5,
         "yellow_mold": 7,
         "golf_cart_part": 975
@@ -31,62 +31,142 @@
         "rotting_wood": 5,
         "yellow_mold": 1,
         "golf_cart_part": 294,
-        "duckfish": 32,
+        "duckfish": 48,
         "black_marlin": 30,
         "yellow_perch": 18
     },
-    "placebridge": [],
+    "placebridge": [
+        [
+            896,
+            768
+        ],
+        [
+            864,
+            768
+        ],
+        [
+            864,
+            768
+        ],
+        [
+            896,
+            800
+        ],
+        [
+            928,
+            800
+        ],
+        [
+            960,
+            800
+        ],
+        [
+            992,
+            800
+        ],
+        [
+            992,
+            640
+        ],
+        [
+            1056,
+            640
+        ],
+        [
+            1024,
+            640
+        ],
+        [
+            1088,
+            640
+        ],
+        [
+            1120,
+            640
+        ],
+        [
+            1152,
+            640
+        ],
+        [
+            1184,
+            640
+        ],
+        [
+            1216,
+            640
+        ],
+        [
+            1248,
+            640
+        ],
+        [
+            1312,
+            992
+        ],
+        [
+            1312,
+            1024
+        ],
+        [
+            1312,
+            1056
+        ]
+    ],
     "pos": [
-        703,
-        748
+        1376,
+        1126
     ],
     "node densities": [
         {
-            "anchovy": 7,
-            "chub_mackerel": 6,
-            "sardine": 3
+            "sardine": 5,
+            "chub_mackerel": 9,
+            "anchovy": 10
         },
         {
-            "anchovy": 13,
-            "sardine": 3
+            "sardine": 8,
+            "anchovy": 17
         },
         {
-            "anchovy": 16,
-            "sardine": 2
+            "sardine": 2,
+            "anchovy": 24
         },
         {
-            "anchovy": 4,
-            "bass": 9,
-            "sardine": 3
+            "sardine": 6,
+            "bass": 13,
+            "anchovy": 5
         },
         {
-            "pink_rockling": 9,
-            "rockling": 7
+            "pink_rockling": 13,
+            "rockling": 13
         },
         {
-            "pink_salmon": 17,
-            "anchovy": 9
+            "anchovy": 12,
+            "pink_salmon": 22
         },
         {
-            "pink_salmon": 22,
-            "anchovy": 4
+            "pink_salmon": 29,
+            "anchovy": 6
         },
         {
             "black_marlin": 1
         },
         {
-            "yellow_perch": 6
+            "yellow_perch": 14
         },
         {
-            "yellow_perch": 6
+            "yellow_perch": 14
+        },
+        {
+            "duckfish": 8
         }
     ],
     "golf cart": {
         "pos": [
-            632.3999999999775,
-            629.2000000000045
+            1357.2999999999997,
+            1122.0
         ],
-        "fuel": 13705,
+        "fuel": 5080,
         "rate": 5,
         "accel": 0.13,
         "level": 0
@@ -103,5 +183,19 @@
         "8": true,
         "9": false,
         "10": true
+    },
+    "tutorials_shown": {
+        "test": [
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow "
+        ]
     }
 }
