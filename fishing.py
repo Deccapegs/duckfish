@@ -12,7 +12,19 @@ window= pygame.display.set_mode((info.current_w,info.current_h-63),pygame.RESIZA
 screen=pygame.Surface((screen_height,screen_width)).convert_alpha()
 pygame.display.set_caption("fishing game")
 clock=pygame.time.Clock()
+import ctypes
+import os
+import platform
 
+# Fix for Windows
+if platform.system() == "Windows":
+    try:
+        ctypes.windll.shcore.SetProcessDpiAwareness(2)  # Per-monitor DPI aware
+    except Exception:
+        try:
+            ctypes.windll.user32.SetProcessDPIAware()  # Fallback for older Windows
+        except Exception:
+            pass
 from modules.funcs import*
 import modules.maps as maps
 if __name__!="__main__":
@@ -28,16 +40,17 @@ class Types():
 		self.duckling=33
 		self.eagle=34
 
-		self.mayors_house=429
+		self.mayors_house=428
 		self.church=430
 		self.lighthouse=432
 		self.house_1=431
-		self.brewery=433
+		self.brewery=436
 		self.stone_houses=[self.mayors_house,self.church,self.lighthouse,self.house_1,self.brewery]
 
-		self.bush=434
-		self.big_weeping_willow=435
-		self.rock=436
+		self.bush=433
+		self.big_weeping_willow=434
+		self.shrine=429
+		self.rock=435
 		self.pine_tree=437
 		self.cocoright=438
 		self.cocoleft=439
@@ -59,7 +72,6 @@ class decr():
 			self.size=self.img.img.get_size()
 			self.rect=self.img.img.get_rect()
 		setattr(self.rect,anchor,self.pos)
-		
 		
 		self.y_order=self.rect.midbottom[1]
 		game.drawlist.append(self)
@@ -467,14 +479,13 @@ class Tutorial():
 		else:
 			self.current_tutorial=None
 		self.para=Para(text)
-		self.bg=pygame.Surface((screen_width,screen_height)).convert()
-		self.bg.fill((0,0,0))
+		self.bg=image.tutorial
 		bg_rect=self.bg.get_rect(center=(screen_width/2,screen_height/2))
 		self.bg_draw_pos=bg_rect.topleft
 		self.para_pos=center_surf(self.para.img)
-		self.exit_size=(10,10)
+		self.exit_size=(11,11)
 		self.exit_y_max=40
-		self.exit_img=make_surf(self.exit_size,(255,255,255))
+		self.exit_img=image.exit_button.copy()
 		self.exit_pos=center_surf(self.exit_img)
 		self.exit_pos[1]+=min(self.para.img.get_height()+10+self.exit_size[1],self.exit_y_max)
 		self.exit=Button(self.exit_img,self.exit_pos)
@@ -511,7 +522,7 @@ class Tutorial_menu():
 		self.tutorial=game.tutorial
 		self.tutorials_shown=self.tutorial.tutorials_shown
 		self.tutorial_buttons={}
-		self.offset=[3,3]
+		self.offset=[7,8]
 		self.dist=8
 		for i,key in enumerate(self.tutorials_shown.keys()):
 			self.tutorial_buttons[key]=Button(text.render(key),[self.offset[0],self.offset[1]+i*self.dist])
@@ -527,6 +538,7 @@ class Tutorial_menu():
 			if button.pressed:
 				self.tutorial.change(self.tutorials_shown[key],reshow=True)
 	def draw(self):
+		screen.blit(image.tutorial,(0,0))
 		for button in self.tutorial_buttons.values():
 			button.draw()
 class images():
@@ -572,6 +584,7 @@ class images():
 		self.pine_tree=get_surf_from_sheet(self.trees_sheet,(-90,0),(32,64))
 		self.weeping_willow_sheet=pygame.image.load("imgs/very big.png").convert_alpha()
 		self.big_weeping_willow=self.weeping_willow_sheet#get_surf_from_sheet(self.weeping_willow_sheet,(-47,-35),(73,81))
+		self.shrine=pygame.image.load("imgs/shrine 2.png").convert_alpha()
 		self.bush=pygame.image.load("imgs/bush.png").convert_alpha()
 		self.rock=pygame.image.load("imgs/rock 2.png").convert_alpha()
 
@@ -606,6 +619,8 @@ class images():
 		self.textsheet=pygame.image.load("imgs/letters.png").convert_alpha()
 		self.smalltextsheet=pygame.image.load("imgs/6x5 letters.png").convert_alpha()
 		self.inventory=pygame.image.load("imgs/invetory.png").convert_alpha()
+		self.tutorial=pygame.image.load("imgs/tut.png").convert_alpha()
+		self.exit_button=pygame.image.load("imgs/exit button.png").convert_alpha()
 		self.sellbuttons=pygame.image.load("imgs/sell buttons.png").convert_alpha()
 		self.objs={
 		t.coco_right:self.flip_coco,
@@ -622,7 +637,8 @@ class images():
 		t.rock:self.rock,
 		t.pine_tree:self.pine_tree,
 		t.cocoleft:self.coconut_tree,
-		t.cocoright:self.flip_coco
+		t.cocoright:self.flip_coco,
+		t.shrine:self.shrine
 
 		}
 	def add(self,name,path):
@@ -976,7 +992,7 @@ class rope():
 class Golf_cart():
 	def __init__(self):
 		self.fuel=game.save.read()["golf cart"]["fuel"]
-		self.max_fuel=int(self.fuel)
+		self.max_fuel=36000
 		self.rate=5
 		self.accel=0.13
 		self.maxspeed=100
@@ -998,6 +1014,8 @@ class Golf_cart():
 	def update(self):
 		self.moving=False
 		self.moving=self.controller_move() if game.player.golfcarting and self.fuel>=0 else False
+		if self.max_fuel/2+60>self.fuel>self.max_fuel/2:
+			game.tutorial.delay_change(["to refuel your golf cart, hold a","fish out and press [e] near the","golf cart"],"refuelling")
 		self.fuel-=self.rate if game.player.golfcarting and self.moving else 0
 		self.bar.update()
 		self.bar.make_show(True) if game.player.golfcarting else self.bar.make_show(False)
@@ -1592,6 +1610,8 @@ class Player():
 				Notice(f"+{amount_} {item_}")
 			else:
 				Notice(f"+{amount_} {item_}",getattr(image,item_))
+		if item_=="placebridge":
+			game.tutorial.delay_change(["good job on your first placebridge","use can use the placebridge by ","going to the inventory, hold the","placebridge and place it on the waters.","","now go explore new lands!"],"using placebridge")
 		self.inventory[item_]+=amount_
 		self.total[item_]+=max(amount_,0)
 	def update_fishing(self):
@@ -1671,6 +1691,7 @@ class Player():
 						tilev=Tile(1,4,[a[0]-game.scroll[0],a[1]-game.scroll[1]],lists=[game.world.tilelist,game.world.placebridgelist],rectlists=[game.world.nonwallrectlist],img=image.placebridge,child=Tile(0,5,[a[0]-game.scroll[0],a[1]-game.scroll[1]+32],lists=[game.world.tilebackdecrolist],img=image.placebridge,sheetpos=(0,-32)))
 						tilev.initother()
 						self.inventory["placebridge"]-=1
+						game.tutorial.delay_change(["you can quickly hold the last item "," you held by pressing: [q]","you can also unhold by pressing [g]"],"quick holding and unholding")
 						self.unhold_item()
 		elif self.malleting:
 			x=mouse_get_pos()
@@ -1764,10 +1785,9 @@ class npc():
 			self.s_update=s
 			def s_s():
 				game.speech.update_speech("how can i help you?",{
-					'3 copper: 3 placebridge':[{"placebridge":3},{"copper":3},"cont"],
+					'3 copper: 3 placebridge':[{"placebridge":3},{"copper":3},"cont_placebridge"],
 					"20 copper 4 bass:1 mallet":[{"mallet":1},{"copper":20,"bass":4},"cont"],
 					"bye":[{},{},"exit"]
-					
 					})
 			self.s_speech=s_s
 		elif self.type==t.golf_cart_part:
@@ -2024,6 +2044,7 @@ class Speech():
 						for give in r[2][0]:
 							if give == "golf_cart":
 								game.golf_cart.pos=list(game.player.pos)
+								game.tutorial.delay_change(["enter and exit the golf cart by pressing [e]"],"using golf_cart")
 							elif give == "golf_cart_stat_up":
 								game.golf_cart.levelup()
 							elif give == "golf cart return":
@@ -2177,7 +2198,7 @@ class Game():
 
 		self.in_dialogue=None
 		self.npc_in_dialogue=None
-		self.path="jsons/save.json"
+		self.path="jsons/dev save.json"
 		self.save=file(self.path)
 		self.diamessage="none"
 		self.sellinfo=file("jsons/sell info.json").read()
@@ -2478,11 +2499,14 @@ while run==True:
 	elif game.stage=="tutorial":
 		game.tutorial.update()
 		game.tutorial.draw()
+		game.current_screen_size=[screen_width,screen_height]
 	elif game.stage=="tutorial_menu":
-		screen.fill((0,0,0))
 		game.tutorial_menu.update()
 		game.tutorial_menu.draw()
+		game.current_screen_size=[screen_width,screen_height]
+
 	#c=pygame.Surface((500,500))
+
 #	c.fill((70,70,50))
 #	screen.blit(c,special_flags=pygame.BLEND_RGB_SUB)
 	clock.tick(60)

@@ -90,16 +90,18 @@ doto list:
  -fix negitve placebridge and fish d
  -check if node saves are working d
  -fix speech highlights d
- -tutorial delay
+ -tutorial delay d
+ -tutoral d
+ -fix placebrigh sorting (ok nvm fu) d
 
- -tutoral
  -duck map loaction
  -add mouse side scrolling in inventory
  -repostion fishing nodes at starter island
- -fix placebrigh sorting
  -fix fishing on cliff faces
 -nerf yellow perch nodes
+-buff marlin node
 -lwk nerf all the nodes
+-prevent actions when golf carting
 -add more reasons to earn coppers
  -bait upgrades?
  -golf acrt needs some money
@@ -108,6 +110,7 @@ doto list:
 -add rod
 -add duckfish
 -add maybe 5 more fish
+-add wheel spin
 -add one more npc at village
 -finish tree (can start working on something else)
 scope too big for bad code, so no:
