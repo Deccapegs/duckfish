@@ -1,202 +1,73 @@
 {
     "inventory": {
-        "copper": 4,
-        "mallet": 1,
-        "placebridge": 24,
-        "anchovy": 2,
+        "copper": 0,
+        "mallet": 0,
+        "placebridge": 1,
+        "anchovy": 0,
         "sardine": 1,
         "bass": 0,
         "chub_mackerel": 0,
         "pink_rockling": 0,
         "rockling": 0,
         "pink_salmon": 0,
-        "yellow_perch": 0,
-        "black_marlin": 0,
         "duckfish": 0,
-        "rotting_wood": 4,
+        "rotting_wood": 0,
         "yellow_mold": 0,
-        "golf_cart_part": 2
+        "golf_cart_part": 0
     },
     "total": {
-        "copper": 79,
-        "anchovy": 28,
-        "sardine": 8,
-        "bass": 4,
+        "copper": 0,
+        "anchovy": 0,
+        "sardine": 1,
+        "bass": 0,
         "chub_mackerel": 0,
         "rockling": 0,
         "pink_rockling": 0,
-        "pink_salmon": 2,
-        "mallet": 1,
-        "placebridge": 56,
-        "rotting_wood": 4,
+        "pink_salmon": 0,
+        "mallet": 0,
+        "placebridge": 1,
+        "rotting_wood": 0,
         "mold": 0,
         "yellow_mold": 0,
-        "golf_cart_part": 2,
-        "duckfish": 0,
-        "black_marlin": 0,
-        "yellow_perch": 0
+        "golf_cart_part": 0,
+        "duckfish": 0
     },
-    "placebridge": [
-        [
-            960,
-            768
-        ],
-        [
-            960,
-            800
-        ],
-        [
-            992,
-            800
-        ],
-        [
-            992,
-            672
-        ],
-        [
-            1024,
-            672
-        ],
-        [
-            1056,
-            672
-        ],
-        [
-            1088,
-            672
-        ],
-        [
-            1120,
-            672
-        ],
-        [
-            1152,
-            672
-        ],
-        [
-            1184,
-            672
-        ],
-        [
-            1216,
-            672
-        ],
-        [
-            1248,
-            672
-        ],
-        [
-            1216,
-            416
-        ],
-        [
-            1184,
-            416
-        ],
-        [
-            1024,
-            192
-        ],
-        [
-            992,
-            192
-        ],
-        [
-            320,
-            512
-        ],
-        [
-            288,
-            512
-        ],
-        [
-            256,
-            512
-        ],
-        [
-            480,
-            608
-        ],
-        [
-            512,
-            608
-        ],
-        [
-            544,
-            608
-        ],
-        [
-            576,
-            640
-        ],
-        [
-            544,
-            640
-        ],
-        [
-            864,
-            768
-        ],
-        [
-            864,
-            768
-        ],
-        [
-            896,
-            768
-        ],
-        [
-            928,
-            768
-        ]
-    ],
+    "placebridge": [],
     "pos": [
-        924,
-        772
+        915,
+        351
     ],
     "node densities": [
         {
-            "anchovy": 12,
-            "sardine": 5,
-            "chub_mackerel": 8
-        },
-        {
-            "anchovy": 52,
+            "anchovy": 9,
+            "chub_mackerel": 7,
             "sardine": 4
         },
         {
-            "anchovy": 25,
+            "anchovy": 15,
+            "sardine": 5
+        },
+        {
+            "anchovy": 20,
             "sardine": 2
         },
         {
-            "sardine": 7,
-            "anchovy": 7,
-            "bass": 11
-        },
-        {
-            "rockling": 13,
-            "pink_rockling": 12
-        },
-        {
-            "pink_salmon": 24,
-            "anchovy": 11
-        },
-        {
-            "pink_salmon": 30,
             "anchovy": 5,
-            "sardine": 4
+            "bass": 10,
+            "sardine": 5
         },
         {
-            "black_marlin": 1
+            "pink_rockling": 10,
+            "rockling": 10
         },
         {
-            "yellow_perch": 15
+            "pink_salmon": 20,
+            "anchovy": 10
         },
         {
-            "yellow_perch": 15
-        },
-        {
-            "duckfish": 8
+            "pink_salmon": 10,
+            "anchovy": 5,
+            "sardine": 5
         }
     ],
     "golf cart": {
@@ -205,49 +76,8 @@
             -1000.0
         ],
         "fuel": 36000,
-        "rate": 5,
+        "rate": 10,
         "accel": 0.13,
         "level": 0
-    },
-    "npcs_not_popped": {
-        "0": false,
-        "1": false,
-        "2": false,
-        "3": false,
-        "4": false,
-        "5": false,
-        "6": true,
-        "7": false,
-        "8": true,
-        "9": false,
-        "10": false
-    },
-    "tutorials_shown": {
-        "controls": [
-            "wasd: move",
-            "m1: cast fishing line",
-            "t: inventory",
-            "r: map",
-            "g: unhold item",
-            "q: quick hold last item",
-            "f: save game"
-        ],
-        "fishing": [
-            "welcome to the",
-            "world of duckfish!",
-            "cast your rod to fish",
-            "fish where the fish are"
-        ],
-        "sell fish": [
-            "nice work on your first fish!",
-            "sell fish by pressing the",
-            " inventory button[t] and choose the",
-            "amount of fish to sell"
-        ],
-        "buy placebridge": [
-            "   nice work on your fisrt coppers!",
-            "you can use this coppers",
-            " to buy 'placebridges' at the stall"
-        ]
     }
 }

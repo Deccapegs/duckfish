@@ -10,8 +10,6 @@
         "pink_rockling": 0,
         "rockling": 0,
         "pink_salmon": 0,
-        "yellow_perch": 0,
-        "black_marlin": 0,
         "duckfish": 0,
         "rotting_wood": 0,
         "yellow_mold": 0,
@@ -32,13 +30,12 @@
         "mold": 0,
         "yellow_mold": 0,
         "golf_cart_part": 0,
-        "duckfish": 0,
-        "black_marlin": 0,
-        "yellow_perch": 0
+        "duckfish": 0
     },
     "placebridge": [],
     "pos": [
-        766, 686
+        960,
+        352
     ],
     "node densities": [
         {
@@ -80,31 +77,6 @@
         ],
         "fuel": 36000,
         "rate": 10,
-        "accel": 0.2,
-        "level":0
-    },
-    "npcs_not_popped": {
-        "0": false,
-        "1": false,
-        "2": false,
-        "3": false,
-        "4": false,
-        "5": false,
-        "6": false,
-        "7": false,
-        "8": false,
-        "9": false,
-        "10": false
-    },
-    "tutorials_shown":{
-        "controls":[
-            "wasd: move",
-            "m1: cast fishing line",
-            "t: inventory",
-            "r: map",
-            "g: unhold item",
-            "q: quick hold last item",
-            "f: save game"
-            ]
+        "accel": 0.2
     }
 }
