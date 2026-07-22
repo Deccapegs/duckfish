@@ -24,9 +24,9 @@
    <property name="type" value="light_house"/>
   </properties>
  </tile>
- <tile id="4">
+ <tile id="4" type="brewery">
   <properties>
-   <property name="type" value=""/>
+   <property name="type" value="brewery"/>
   </properties>
  </tile>
  <tile id="5">
@@ -41,7 +41,7 @@
  </tile>
  <tile id="7">
   <properties>
-   <property name="type" value=""/>
+   <property name="type" value="rock"/>
   </properties>
  </tile>
  <tile id="8">

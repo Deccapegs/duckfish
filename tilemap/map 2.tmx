@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="24">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="25">
  <tileset firstgid="1" source="tileset.tsx"/>
  <tileset firstgid="26" source="coco.tsx"/>
- <tileset firstgid="29" source="place hold tiles.tsx"/>
- <tileset firstgid="429" source="place hold derc.tsx"/>
+ <tileset firstgid="28" source="place hold tiles.tsx"/>
+ <tileset firstgid="428" source="place hold derc.tsx"/>
  <layer id="4" name="Tile Layer 2" width="50" height="50">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -59,7 +59,8 @@
 </data>
  </layer>
  <objectgroup id="2" name="npcs">
-  <object id="23" gid="29" x="1309" y="1079" width="32" height="32"/>
+  <object id="23" gid="28" x="1309" y="1079" width="32" height="32"/>
+  <object id="24" gid="439" x="517.5" y="380.5" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="3" name="dercs"/>
  <layer id="1" name="Tile Layer 1" width="50" height="50">
