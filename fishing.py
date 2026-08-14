@@ -1,4 +1,4 @@
-import pygame, random,math,json,sys,os
+import pygame, random,math,json,sys,os,threading
 from random import randint
 from collections import Counter
 pygame.init()
@@ -33,27 +33,29 @@ class Types():
 	def __init__(self):
 		self.stall_1=0
 		self.golf_cart_part=1
+		self.cog=30
+		self.v12_engine=29
 		self.coco_right=27
-		self.pine=28
-		self.gcbs=29
-		self.anchovyfisher=32
-		self.duckling=33
-		self.eagle=34
+		self.pine=439
+		self.gcbs=28
+		self.anchovyfisher=31
+		self.duckling=32
+		self.eagle=33
 
 		self.mayors_house=428
-		self.church=430
-		self.lighthouse=432
-		self.house_1=431
-		self.brewery=436
+		self.church=429
+		self.lighthouse=431
+		self.house_1=430
+		self.brewery=432
 		self.stone_houses=[self.mayors_house,self.church,self.lighthouse,self.house_1,self.brewery]
 
 		self.bush=433
 		self.big_weeping_willow=434
-		self.shrine=429
+		self.shrine= 439
 		self.rock=435
-		self.pine_tree=437
-		self.cocoright=438
-		self.cocoleft=439
+		self.pine_tree=436
+		self.cocoright=437
+		self.cocoleft=438
 t=Types()
 class decr():
 	def __init__(self,img,pos,anchor="bottomleft",colliderect=None,type_house=False):
@@ -244,18 +246,21 @@ class world():
 			a=Tile(1,4,pos,lists=[self.tilelist,self.placebridgelist],rectlists=[self.nonwallrectlist],img=image.placebridge,child=Tile(0,5,[pos[0],pos[1]+32],lists=[self.tilebackdecrolist],img=image.placebridge,sheetpos=(0,-32)))
 			a.initother()
 		for data in self.obj_data:
-			if data[0] in [27,28]:
-				obj(data,lists=[game.drawlist])
-			elif data[0]==29:
-				obj(data,type=npc)
-			elif data[0] in [31,30]:
-				npc(t.golf_cart_part,data[1],imgs={"engine":[image.v12_engine,(0,0)]} if data[0]==30 else {"cog":[image.cogs,(0,0)]})
+			#if data[0] in [27,28]:
+			#	obj(data,lists=[game.drawlist])
+			if data[0]==t.gcbs:
+				npc(t.gcbs,data[1])
+			elif data[0] in [t.v12_engine,t.cog]:
+				npc(t.golf_cart_part,data[1],imgs={"engine":[image.v12_engine,(0,0)]} if data[0]==t.cog else {"cog":[image.cogs,(0,0)]})
 			elif data[0]==t.anchovyfisher:
 				npc(t.anchovyfisher,data[1])
 			elif data[0]==t.duckling:
 				npc(t.duckling,data[1])
 			elif data[0]==t.eagle:
 				npc(t.eagle,data[1])
+			elif data[0]==t.shrine:
+				npc(t.shrine,data[1])
+
 
 		for data in self.obj_derc_data:
 			if data[0] in t.stone_houses:
@@ -287,6 +292,8 @@ class chunk():
 		self.decrlist=[]
 		self.tiles=[]
 		self.nodes=[]
+		self.hitbox=pygame.Surface((chunk_size[0]*32,chunk_size[1]*32))
+		self.hitbox.fill((random.random()*255,random.random()*255,0))
 	def update(self):
 		#for tilev in self.tiles:
 		#	tilev.update()
@@ -297,6 +304,8 @@ class chunk():
 			tile.draw()
 		for tilev in self.tiles:
 			tilev.draw()
+
+		screen.blit(self.hitbox,withscroll([self.pos[0]*32,self.pos[1]*32]))
 	def draw_nodes(self):
 		for node in self.nodes:
 			node.draw()
@@ -454,7 +463,7 @@ def pallettes_swap(surf,colour_pairs,alpha_key_=(0,0,0)):
 class Tutorial():
 	def __init__(self):
 		self.tutorials_shown=game.save.read()["tutorials_shown"]#{"speed tech":["bhop"]*90}
-		self.change(["woah"]*90)
+		#self.change(["woah"]*90)
 		self.delay_args={
 		"text":[],
 		"name":None,
@@ -622,6 +631,8 @@ class images():
 		self.tutorial=pygame.image.load("imgs/tut.png").convert_alpha()
 		self.exit_button=pygame.image.load("imgs/exit button.png").convert_alpha()
 		self.sellbuttons=pygame.image.load("imgs/sell buttons.png").convert_alpha()
+
+		self.player_icon_sheet=pygame.image.load("imgs/player loc.png").convert_alpha()
 		self.objs={
 		t.coco_right:self.flip_coco,
 	#	t.coco_left:self.coconut_tree,
@@ -1241,12 +1252,16 @@ class inventory():
 		scale=[screen_width/window.get_width(),screen_height/window.get_height()]
 		mpos=[a*scale[0],d*scale[1]]
 		a,b= pygame.mouse.get_rel()
+		if moe[2]:
+			pass
 		speed=[a*scale[0],b*scale[1]] if True in c.mouse[0] else c.mouse_scroll
-		if speed!=[0,0] or True in self.mouse and self.window_rect.collidepoint(mpos):
+		if (speed!=[0,0] or True in self.mouse) and self.window_rect.collidepoint(mpos):
 			self.offset=[min(1,self.offset[0]+speed[0]),min(1,self.offset[1]+speed[1])]
 			speed=[0,0] if True in c.mouse[0] else c.mouse_scroll
 		else:
 			self.offset=[min(0,self.offset[0]),min(0,self.offset[1])]
+		
+
 		if self.mouse==[True,False]:
 			for i in self.items:
 				if self.items[i]["rect"].collidepoint(mpos[0]-self.offset[0],mpos[1]-self.offset[1])==True:
@@ -1379,7 +1394,8 @@ class c():
 		"w":False,
 		"a":False,
 		"s":False,
-		"d":False
+		"d":False,
+		"LSHIFT":False
 		}
 		self.mouse_speed=mouse_get_speed()
 		self.mouse_scroll=[0,0]
@@ -1391,7 +1407,7 @@ class c():
 			self.key[k][1]=self.key[k][0]
 			self.key[k][0]=key[getattr(pygame,f"K_{k}")]
 		for k in self.pkey:
-			self.pkey[k]=self.key[k][0]
+			self.pkey[k]=key[getattr(pygame,f"K_{k}")]
 		for k in self.otherkey:
 			self.otherkey[k][1]=self.otherkey[k][0]
 			self.otherkey[k][0]=key[getattr(pygame,f"K_{k}")]
@@ -1416,6 +1432,7 @@ class Player():
 		self.chunkpos=[math.floor(self.pos[0]/(32*game.world.chunksize[0])),math.floor(self.pos[1]/(32*game.world.chunksize[1]))]
 		self.y_order=self.pos[1]-13
 		self.speed=[1,1]
+		self.new_speed=list(self.speed)
 		self.rect=self.img.get_rect(topleft=self.pos)
 		self.size=list(self.img.get_size())
 		self.rect.height=10
@@ -1443,15 +1460,24 @@ class Player():
 		self.hold_item("duck",self.held_img)
 		self.unhold_item()
 
+		self.speed_timer=countdown(2**32)
+
 		self.inventory=game.save.read()["inventory"]
 		self.total=game.save.read()["total"]
 		self.money=0
 	def update(self):
+		#print(self.speed,self.new_speed,self.speed_timer.timer,self.speed_timer.tick)
 		self.key=controller(flag="key")
 		if self.key[pygame.K_0] and game.path=="jsons/dev save.json":
 			self.speed=[14,14]
 		else:
-			self.speed=[1,1]
+			if self.speed_timer.tick:
+				self.speed=[1,1]
+			elif self.speed_timer.timer>0:
+				self.speed=list(self.new_speed)
+			else:
+				self.speed=[1,1]
+
 		key=self.key
 		mousepos=list(pygame.mouse.get_pos())
 		scale=[screen_width/window.get_width(),screen_height/window.get_height()]
@@ -1749,6 +1775,9 @@ class Player():
 	def unhold_item(self):
 		self.held_img=None 
 		self.held=None	
+	def speed_boost(self,speed=2,time=120*60):
+		self.speed_timer.timer+=time
+		self.new_speed=[speed,speed]
 
 				
 class npc():
@@ -1770,7 +1799,6 @@ class npc():
 		self.s_update=lambda:None
 
 		if self.type==t.stall_1:
-
 			self.imgs={
 			"roof":[get_surf_from_sheet(image.stallsheet,(-45,0),(45,48)),[0,0]],
 			"chicken":[get_surf_from_sheet(image.chicken,(0,0),(24,21)),[17,24],[0,0]],
@@ -1807,6 +1835,7 @@ class npc():
 			self.s_update=s
 			self.s_speech=s_s
 		elif self.type==t.gcbs:
+			print(self.pos)
 			decr(get_surf_from_sheet(image.gcbs_sheet,(0,0),(162,84)),self.pos,"topleft",colliderect=((self.pos[0]+19,self.pos[1]+64),(162-38,24) ))
 			decr(get_surf_from_sheet(image.gcbs_sheet,(-162,0),(85,31)),add_poses(self.pos,(63,65)),"topleft",colliderect=((self.pos[0]+19,self.pos[1]+64),(162-38,15) ))
 			self.imgs={"crow":[image.crow,[84,66],[0,0]]}
@@ -1884,7 +1913,17 @@ class npc():
 					self.state="give"
 			self.s_update=s
 			self.s_speech=s_s
-
+		elif self.type==t.shrine:
+			self.imgs={"shrine":[image.shrine,[0,0]]}
+			self.etotalk=frontdecr(image.etointeract,add_poses(self.pos,(20,20)))
+			self.rect=self.imgs["shrine"][0].get_rect(topleft=self.pos)
+			def s_s():
+				game.speech.update_speech(["you peer into the shrine in awe.","you think about giving it some offerings"],
+					{
+					"offer 50 coppers":[{"speed boost":4*60*60},{"copper":50},"exit"],
+					"leave without offering":[{},{},"exit"]
+					})
+			self.s_speech=s_s
 
 		if imgs!=None:
 
@@ -2049,6 +2088,8 @@ class Speech():
 								game.golf_cart.levelup()
 							elif give == "golf cart return":
 								game.golf_cart.respawn()
+							elif give == "speed boost":
+								game.player.speed_boost(2,4*60*60)
 							else:
 								game.player.add_inventory(give,r[2][0][give])
 						try:
@@ -2138,11 +2179,11 @@ class Daynight():
 
 	#	screen.blit(self.player_light,self.light_pos,special_flags=pygame.BLEND_RGB_ADD)
 class Map:
-	def __init__(self,data,bg_colour=(50,100,200),scale=8):
+	def __init__(self,data,bg_colour=(50,100,200),scale=7):
 		self.data=data
 		self.size=[len(self.data[0]),len(self.data)]
 		self.bg_colour=bg_colour
-		
+		self.player_ani=animation(image.player_icon_sheet,[11,11],6)
 		self.set_palette()
 		self.offset=[0,0]
 		self.scale=scale
@@ -2158,6 +2199,7 @@ class Map:
 		5:[(230,240,255),(180,220,236),(180,220,200)]
 		}
 	def render(self):
+		
 		self.map=pygame.Surface(self.size).convert()
 		self.map.fill(self.bg_colour)
 		for y,row in enumerate(self.data):
@@ -2170,13 +2212,20 @@ class Map:
 		self.size[0]*=self.scale
 		self.size[1]*=self.scale
 	def update(self):
+		self.player_ani.update()
+		self.player_pos=[(math.floor(i/32))*7 for i in game.player.pos]
+		self.player_pos=add_poses(self.player_pos,(-2,-2))
 		if c.mouse[0][0]:
 			self.offset=add_poses(c.mouse_speed,self.offset)
 		else:
 			self.offset=[clamp(self.offset[0],[0,min(-self.size[0]+screen_width,0)]),clamp(self.offset[1],[0,min(-self.size[1]+screen_height,0)])]
-
 	def draw(self):
 		screen.blit(self.map,self.offset)
+		self.player_ani.draw(add_poses(self.player_pos,self.offset))
+	def reshow(self):
+		self.offset=[-(math.floor(i/32))*7-3 for i in game.player.pos]
+		self.offset[0]+=screen_width/2
+		self.offset[1]+=screen_height/2
 class Game():
 	def __init__(self):
 		Func.set_main_game(self)
@@ -2217,13 +2266,13 @@ class Game():
 		self.world=world()
 		self.world.initother()
 		self.waveables=[tile.rect for tile in self.world.tilelist if tile not in self.world.waterlist]
-		self.map=Map(self.world.layer1)
 
 		self.player=Player()
 		self.golf_cart=Golf_cart()
 		self.drawlist.append(self.player)
 		self.drawlist.append(self.golf_cart)
 		self.scroll=[self.player.rect.center[0],self.player.rect.center[1]]
+		self.map=Map(self.world.layer1)
 
 		self.notice_board=Notification_Center()
 		self.inventory=inventory()
@@ -2355,6 +2404,8 @@ def make_item(name:str,place_after:str,catergory:str,cost:int,refill:int=0,para:
 	f3.overwrite(d3)
 	f4.overwrite(d4)
 	raise Exception(f"item, {name}, made")
+def do_chunks():
+	pass
 #make_item("yellow_perch","pink_salmon","fish",3,2000,["this fish is so full","itself. always trying to","look the flashlist"])
 
 """
@@ -2375,7 +2426,8 @@ game.initother()
 #make_item("duckfish","pink_salmon","fish",x:=-(2**64),x,[ "so you've found me","[insert lore text]"])
 testnotice=Notice("welcome!",image.bigfish)
 coco=decr(image.coconut_tree,[31*32+10,15*32])
-game.tutorial.change(["welcome to the","world of duckfish!","cast your rod to fish","fish where the fish are"],"fishing")
+#game.tutorial.change(["welcome to the","world of duckfish!","cast your rod to fish","fish where the fish are"],"fishing")
+chunk_loader=threading.Thread(target=do_chunks)
 run= True
 while run==True:
 	#game.scroll=[0,0]
@@ -2410,10 +2462,12 @@ while run==True:
 					game.change_stage("tutorial_menu")
 			elif event.key==pygame.K_r:
 				game.change_stage("map") if not game.stage=="map" else game.change_stage("play")
+				game.map.reshow()
 		elif event.type == pygame.MOUSEWHEEL:
 			scrolling=True
-			pfasd=[-event.x*2,event.y*2]
 
+			pfasd=  [-event.precise_y*4,event.precise_x*4] if c.pkey["LSHIFT"] else [-event.precise_x*4,event.precise_y*4]
+			print(pfasd)
 	if scrolling:
 		c.mouse_scroll=pfasd
 	else:
