@@ -93,23 +93,27 @@ doto list:
  -tutorial delay d
  -tutoral d
  -fix placebrigh sorting (ok nvm fu) d
-
- -duck map loaction
  -add mouse side scrolling in inventory
+ -redesign bridge
+ -fix fishing on cliff faces nvm im lazy
+ -duck map location
  -repostion fishing nodes at starter island
- -fix fishing on cliff faces
 -nerf yellow perch nodes
--buff marlin node
 -lwk nerf all the nodes
--prevent actions when golf carting
+-prevent actions when golf carting (idc)
+-buff marlin node
 -add more reasons to earn coppers
- -bait upgrades?
- -golf acrt needs some money
  -movement boost shrine
+ -golf acrt needs some money
+
+ -bait upgrades?
  -night market god potion
+ -add hats
 -add rod
 -add duckfish
 -add maybe 5 more fish
+ -make one only avaible through purchase
+-add item counter
 -add wheel spin
 -add one more npc at village
 -finish tree (can start working on something else)

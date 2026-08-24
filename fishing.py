@@ -16,15 +16,7 @@ import ctypes
 import os
 import platform
 
-# Fix for Windows
-if platform.system() == "Windows":
-    try:
-        ctypes.windll.shcore.SetProcessDpiAwareness(2)  # Per-monitor DPI aware
-    except Exception:
-        try:
-            ctypes.windll.user32.SetProcessDPIAware()  # Fallback for older Windows
-        except Exception:
-            pass
+
 from modules.funcs import*
 import modules.maps as maps
 if __name__!="__main__":
@@ -78,10 +70,23 @@ class decr():
 		self.y_order=self.rect.midbottom[1]
 		game.drawlist.append(self)
 		game.world.assign_chunk(self,get_chunk_pos(self.pos))
-
+		self.render_shadows()
+	def render_shadows(self):
+		try:
+			mask=pygame.mask.from_surface(self.img)
+		except TypeError:
+			mask=pygame.mask.from_surface(self.img.img)
+		self.shadow=mask.to_surface(setcolor=(60,40,40),unsetcolor=(0,0,0,0))
+		self.shadow=pygame.transform.flip(self.shadow,False,True)
+		self.shadow_pos=list(self.pos)
+		try:
+			self.shadow_pos[1]=self.pos[1]-self.img.get_height()*0
+		except AttributeError:
+			self.shadow_pos[1]=self.pos[1]-self.img.img.get_height()*0
 	def update(self):
 		try:
 			self.img.update()
+			self.render_shadows()
 		except AttributeError:
 			pass
 	def draw(self):
@@ -90,6 +95,8 @@ class decr():
 			screen.blit(self.img,withscroll((self.rect.topleft)))
 		except TypeError:
 			self.img.draw(withscroll((self.rect.topleft)))
+	def draw_shadow(self):
+		screen.blit(self.shadow,withscroll(self.shadow_pos),special_flags=pygame.BLEND_RGB_SUB)
 class Wave():
 	def __init__(self,pos):
 		self.pos=pos
@@ -279,6 +286,13 @@ class world():
 				obj.parent_chunk=self.chunks[pos[1]][pos[0]]
 			except AttributeError:
 				pass
+			return
+		list_=getattr(self.chunks[pos[1]][pos[0]],type)
+		list_.append(obj)
+		try:
+			obj.parent_chunk=self.chunks[pos[1]][pos[0]]
+		except AttributeError:
+			pass
 
 
 class chunk():
@@ -292,8 +306,8 @@ class chunk():
 		self.decrlist=[]
 		self.tiles=[]
 		self.nodes=[]
-		self.hitbox=pygame.Surface((chunk_size[0]*32,chunk_size[1]*32))
-		self.hitbox.fill((random.random()*255,random.random()*255,0))
+	#	self.hitbox=pygame.Surface((chunk_size[0]*32,chunk_size[1]*32))
+		#self.hitbox.fill((random.random()*255,random.random()*255,0))
 	def update(self):
 		#for tilev in self.tiles:
 		#	tilev.update()
@@ -305,7 +319,7 @@ class chunk():
 		for tilev in self.tiles:
 			tilev.draw()
 
-		screen.blit(self.hitbox,withscroll([self.pos[0]*32,self.pos[1]*32]))
+		#screen.blit(self.hitbox,withscroll([self.pos[0]*32,self.pos[1]*32]))
 	def draw_nodes(self):
 		for node in self.nodes:
 			node.draw()
@@ -632,6 +646,10 @@ class images():
 		self.exit_button=pygame.image.load("imgs/exit button.png").convert_alpha()
 		self.sellbuttons=pygame.image.load("imgs/sell buttons.png").convert_alpha()
 
+		self.straw_hat=pygame.image.load("imgs/hat 2.png").convert_alpha()
+		self.tophat=pygame.image.load("imgs/hat 1.png").convert_alpha()
+		self.red_ski_mask=pygame.image.load("imgs/hat 3.png").convert_alpha()
+
 		self.player_icon_sheet=pygame.image.load("imgs/player loc.png").convert_alpha()
 		self.objs={
 		t.coco_right:self.flip_coco,
@@ -846,7 +864,7 @@ def controller(flag="key"):
 		return None
 
 class fishingnode():
-	def __init__(self,pos:list,density:list,range_=4,respawn_rate=60,fish_limit=5,regen=300):
+	def __init__(self,pos:list,density:list,range_=4,respawn_rate=2*60,fish_limit=3,regen=60*20):
 		self.pos=pos
 		self.density=density#init amount
 		self.truedensity=dict(density)#current amount
@@ -859,6 +877,7 @@ class fishingnode():
 		self.timer=timer(respawn_rate)
 		self.regen_timer=timer(regen)
 		game.nodelist.append(self)
+		game.world.assign_chunk(self,get_chunk_pos(self.pos),type="nodes")
 	def initother(self,density):
 		self.truedensity=dict(density)
 	def add_fish(self):
@@ -883,6 +902,7 @@ class fishingnode():
 					ran=random.random()
 					Fish(add_poses(self.pos,[math.cos(angle)*self.range*32*ran,math.sin(angle)*self.range*32*ran]),node=self,type=key)
 					self.truedensity[key]-=1
+	def update_fish(self):
 		for fish in self.fishs:
 			fish.update()
 		self.fishs=[fish for fish in self.fishs if not fish in self.remove_fishs]
@@ -1415,6 +1435,48 @@ class c():
 			self.mouse[k][1]=self.mouse[k][0]
 			self.mouse[k][0]=mouse[0]
 c=c()
+class Hat():
+	def __init__(self):
+		self.hat_images={
+		"none":pygame.Surface((0,0)),
+		"tophat":image.tophat,
+		"straw_hat":image.straw_hat,
+		"red_ski_mask":image.red_ski_mask
+		}
+		self.offset_vals={
+		0:[0,1],
+		-1:[2,3,4,5],
+		1:[6,7], # dont even think about it
+		4:["True"]
+		}
+		self.offset={}
+		for key,val in self.offset_vals.items():
+			for frame in val:
+				self.offset[frame]=key
+		self.hat_offsets={
+		"none":[0,0],
+		"tophat":[0,0],
+		"straw_hat":[-1,-1],
+		"red_ski_mask":[0,1]
+		}
+		self.hat="none"
+		self.pos=[0,0]
+		self.y_order=self.pos[1]
+	def update(self):
+		self.pos=list(add_poses(game.player.pos,[4,-3]))
+		if game.player.direction[0]==1:
+			self.pos[0]+=8
+
+		self.pos[1]+=self.offset[game.player.frame]
+		self.pos=list(add_poses(self.hat_offsets[self.hat],self.pos))
+		self.y_order=self.pos[1]+23-self.offset[game.player.frame]-self.hat_offsets[self.hat][1]
+
+	def switch_hat(self,hat):
+		self.hat=hat
+	def draw(self):
+		disimg=self.hat_images[self.hat].copy()
+		disimg=pygame.transform.flip(disimg,True,False)if game.player.direction[0]==1 else disimg
+		screen.blit(disimg,withscroll(self.pos))
 
 class Player():
 	def __init__(self):
@@ -1424,6 +1486,7 @@ class Player():
 		self.frame=0
 		self.animation_timer=0
 		self.sit_clock=0
+		self.sitting=False
 		self.img.blit(self.sheet,(self.frame*-24,0))
 		self.disimg=self.img
 		self.showing=True
@@ -1518,6 +1581,7 @@ class Player():
 			Notice("+"+str(rhbtrss),image.copper)
 
 		if  True in (key[pygame.K_d],key[pygame.K_a],key[pygame.K_s],key[pygame.K_w]):
+			self.sitting=False
 			self.sit_clock=0
 			self.animation_timer+=1
 			if self.animation_timer>=6:
@@ -1538,11 +1602,14 @@ class Player():
 		else:
 			self.img.fill((0,0,0,0))
 			self.sit_clock+=1
+			self.frame=0
 			if self.sit_clock>=1800:
+				self.sitting=True
 				self.img.blit(self.sheet,(0,-20))		
 			else:
 				self.animation_timer=9
 				self.img.blit(self.sheet)
+				self.sitting=False
 			self.disimg=self.img
 		self.rect.x=self.pos[0]+7
 		if self.speed[0]!=14:
@@ -2268,6 +2335,8 @@ class Game():
 		self.waveables=[tile.rect for tile in self.world.tilelist if tile not in self.world.waterlist]
 
 		self.player=Player()
+		self.hat=Hat()
+		self.hat.switch_hat("red_ski_mask")
 		self.golf_cart=Golf_cart()
 		self.drawlist.append(self.player)
 		self.drawlist.append(self.golf_cart)
@@ -2295,11 +2364,11 @@ class Game():
 			},
 			range_=2,fish_limit=7)
 		
-		,fishingnode((767, 800),
+		,fishingnode((725, 840),
 			{
 			"anchovy":20,
 			"sardine":2,
-			},fish_limit=5)
+			},fish_limit=5,range_=2)
 		
 		,fishingnode((1045, 452),
 			{
@@ -2331,13 +2400,14 @@ class Game():
 		
 		,fishingnode((1099, 1398),{
 			"black_marlin":1
-			},1,respawn_rate=60*60*5,fish_limit=1)
+			},1,regen=60*60*3,fish_limit=1)
 		,fishingnode((923, 1110),{
-			"yellow_perch":10
-			},3)
+			"yellow_perch":5
+			},3,fish_limit=2)
 		,fishingnode((797, 1127),{
-			"yellow_perch":10
-			},3),fishingnode((379, 1214),{"duckfish":3},range_=0.5,regen=1200)]
+			"yellow_perch":5
+			},3,fish_limit=2)]
+		#,fishingnode((379, 1214),{"duckfish":3},range_=0.5,regen=1200)]
 		
 		try:
 			a=self.save.read()["node densities"]
@@ -2487,11 +2557,13 @@ while run==True:
 		#		node.add_fish()
 		for node in game.nodelist:
 			node.draw()	
-		for node in game.nodelist:
-			node.draw_fish()
+	#	for node in game.nodelist:
+	#		node.draw_fish()
 		for wave in game.waves:
 			wave.draw()
 
+		game.player.update()
+		game.hat.update()
 
 		key=game.player.chunkpos
 		game.loaded_chunks=[]
@@ -2507,9 +2579,13 @@ while run==True:
 		for chunk in game.loaded_chunks:
 			game.loaded_decrs+=chunk.decrlist
 			chunk.draw_tiles()
+			for node in chunk.nodes:
+				node.update_fish()
+				node.draw_fish()
 		game.loaded_drawlist+=game.loaded_decrs
 		game.loaded_drawlist.append(game.player)
 		game.loaded_drawlist.append(game.golf_cart)
+		game.loaded_drawlist.append(game.hat)
 		game.loaded_drawlist=sorted(game.loaded_drawlist,key=lambda thing : thing.y_order)
 
 		if game.in_dialogue:
@@ -2521,6 +2597,11 @@ while run==True:
 			w.update()
 		for	rgsfbe in game.loaded_drawlist:
 			rgsfbe.draw()
+			#try:
+			#	rgsfbe.draw_shadow()
+			#except AttributeError:
+			#	pass
+			
 		for particle in game.particles:
 			particle.update()
 			particle.draw()
@@ -2528,7 +2609,6 @@ while run==True:
 			d.draw()
 		#screen.blit(image.lampsheet,withscroll((game.player.pos[0],game.player.pos[1]-10)),special_flags= pygame.BLEND_RGB_ADD)
 		#screen.blit(image.mold)
-		game.player.update()
 		game.golf_cart.update()
 		game.scroll=[-math.floor(game.player.rect.center[0] if not game.player.golfcarting else game.golf_cart.rect.midtop[0])+math.floor(game.current_screen_size[0]/2),
 				 -math.floor(game.player.rect.center[1] if not game.player.golfcarting else game.golf_cart.rect.midtop[1])+math.floor(game.current_screen_size[1]/2)]
@@ -2563,7 +2643,7 @@ while run==True:
 
 #	c.fill((70,70,50))
 #	screen.blit(c,special_flags=pygame.BLEND_RGB_SUB)
-	clock.tick(60)
+	clock.tick(0)
 	pygame.display.set_caption(f"{game.player.pos},{clock.get_fps()}")
 	screen= pygame.transform.scale(screen,(window.get_width(),window.get_height()))
 	window.blit(screen)
