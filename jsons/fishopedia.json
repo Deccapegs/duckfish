@@ -9,13 +9,16 @@
         "be bothered."
     ],
     "anchovy": [
-        "anchovy always",
-        "has self worth,",
-        "never,swims away",
-        "from the school,",
-        "even if it is",
-        "overcrowded",
-        "with 1500 others."
+        "anchovy is small ",
+        "but mighty.",
+        "in large swawns",
+        "they can easily",
+        "overpower largest",
+        "of avian",
+        "",
+        "do not ",
+        "underesimate its",
+        "power"
     ],
     "sardine": [
         "sadine hates being",
@@ -78,7 +81,6 @@
     "yellow_mold": [
         "why would you keep",
         "this... thing"
-        
     ],
     "rotting_wood": [
         "a foul lumber,once",
@@ -101,5 +103,24 @@
         "",
         "well,better than",
         "nothing"
+    ],
+    "black_marlin": [
+        "a fish known for its",
+        "fierce personality..",
+        "also has a passion",
+        "for bikes"
+    ],
+    "yellow_perch": [
+        "this fish is so ",
+        "full itself. always",
+        "trying to look the",
+        "flashlist."
+    ],
+    "mallet":[
+        "able to destroy",
+        "anyting, as long",
+        "as it is bulit ",
+        "with raw spagetti"
+
     ]
 }

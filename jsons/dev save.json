@@ -1,511 +1,229 @@
 {
     "inventory": {
-        "copper": -18446744073709550141,
+        "copper": 608742554432414992048,
         "mallet": 11,
-        "placebridge": 99999999999999999999999999999999999999999999999999555,
-        "anchovy": 17,
-        "sardine": 12,
-        "bass": 6,
-        "chub_mackerel": 0,
+        "placebridge": 99999999999999999999999999999999999999999999999999523,
+        "anchovy": 716,
+        "sardine": 8,
+        "bass": 1,
+        "chub_mackerel": 1,
         "pink_rockling": 1,
-        "rockling": 1,
+        "rockling": 0,
         "pink_salmon": 0,
-        "duckfish": 31,
-        "rotting_wood": 3,
-        "yellow_mold": 6,
-        "golf_cart_part": 696
+        "yellow_perch": 6978,
+        "black_marlin": 24,
+        "duckfish": 16,
+        "rotting_wood": 6,
+        "yellow_mold": 7,
+        "golf_cart_part": 976
     },
     "total": {
-        "copper": -18446744073709550677,
-        "anchovy": 79,
-        "sardine": 35,
-        "bass": 41,
-        "chub_mackerel": 6,
-        "pink_rockling": 6,
+        "copper": -608742554432414992984,
+        "anchovy": 819,
+        "sardine": 43,
+        "bass": 46,
+        "chub_mackerel": 7,
+        "pink_rockling": 7,
         "rockling": 2,
-        "pink_salmon": 2,
+        "pink_salmon": 5,
         "mallet": 11,
         "placebridge": 48,
-        "rotting_wood": 3,
+        "rotting_wood": 6,
         "yellow_mold": 1,
-        "golf_cart_part": 14,
-        "duckfish": 32
+        "golf_cart_part": 295,
+        "duckfish": 48,
+        "black_marlin": 30,
+        "yellow_perch": 26
     },
     "placebridge": [
         [
-            928.0,
-            608.0
+            896,
+            768
         ],
         [
-            928.0,
-            640.0
+            864,
+            768
         ],
         [
-            896.0,
-            608.0
+            864,
+            768
         ],
         [
-            864.0,
-            608.0
+            896,
+            800
         ],
         [
-            832.0,
-            608.0
+            928,
+            800
         ],
         [
-            800.0,
-            608.0
+            960,
+            800
         ],
         [
-            768.0,
-            608.0
+            992,
+            800
         ],
         [
-            736.0,
-            608.0
+            992,
+            640
         ],
         [
-            704.0,
-            608.0
+            1056,
+            640
         ],
         [
-            672.0,
-            608.0
+            1024,
+            640
         ],
         [
-            640.0,
-            608.0
+            1088,
+            640
         ],
         [
-            608.0,
-            608.0
+            1120,
+            640
         ],
         [
-            576.0,
-            608.0
+            1152,
+            640
         ],
         [
-            544.0,
-            608.0
+            1184,
+            640
         ],
         [
-            512.0,
-            608.0
+            1216,
+            640
         ],
         [
-            576.0,
-            352.0
+            1248,
+            640
         ],
         [
-            608.0,
-            352.0
+            1312,
+            992
         ],
         [
-            640.0,
-            352.0
+            1312,
+            1024
         ],
         [
-            672.0,
-            352.0
+            1312,
+            1056
         ],
         [
-            704.0,
-            352.0
+            704,
+            544
         ],
         [
-            736.0,
-            352.0
-        ],
-        [
-            768.0,
-            352.0
-        ],
-        [
-            800.0,
-            352.0
-        ],
-        [
-            960.0,
-            704.0
-        ],
-        [
-            960.0,
-            736.0
-        ],
-        [
-            928.0,
-            736.0
-        ],
-        [
-            896.0,
-            736.0
-        ],
-        [
-            864.0,
-            736.0
-        ],
-        [
-            832.0,
-            864.0
-        ],
-        [
-            832.0,
-            896.0
-        ],
-        [
-            832.0,
-            928.0
-        ],
-        [
-            832.0,
-            960.0
-        ],
-        [
-            832.0,
-            992.0
-        ],
-        [
-            832.0,
-            992.0
-        ],
-        [
-            832.0,
-            1024.0
-        ],
-        [
-            864.0,
-            1024.0
-        ],
-        [
-            896.0,
-            1024.0
-        ],
-        [
-            896.0,
-            1184.0
-        ],
-        [
-            864.0,
-            1184.0
-        ],
-        [
-            832.0,
-            1184.0
-        ],
-        [
-            800.0,
-            1184.0
-        ],
-        [
-            768.0,
-            1184.0
-        ],
-        [
-            736.0,
-            1184.0
-        ],
-        [
-            704.0,
-            1184.0
-        ],
-        [
-            704.0,
-            1152.0
-        ],
-        [
-            672.0,
-            1152.0
-        ],
-        [
-            640.0,
-            1152.0
-        ],
-        [
-            672.0,
-            1184.0
-        ],
-        [
-            640.0,
-            1184.0
-        ],
-        [
-            1920.0,
-            1408.0
-        ],
-        [
-            1888.0,
-            1408.0
-        ],
-        [
-            1856.0,
-            1408.0
-        ],
-        [
-            1824.0,
-            1408.0
-        ],
-        [
-            1792.0,
-            1408.0
-        ],
-        [
-            1760.0,
-            1408.0
-        ],
-        [
-            1728.0,
-            1408.0
-        ],
-        [
-            1696.0,
-            1408.0
-        ],
-        [
-            1664.0,
-            1408.0
-        ],
-        [
-            1632.0,
-            1408.0
-        ],
-        [
-            1600.0,
-            1408.0
-        ],
-        [
-            1568.0,
-            1408.0
-        ],
-        [
-            1536.0,
-            1376.0
-        ],
-        [
-            1568.0,
-            1376.0
-        ],
-        [
-            1504.0,
-            1376.0
-        ],
-        [
-            1472.0,
-            1376.0
-        ],
-        [
-            1472.0,
-            1408.0
-        ],
-        [
-            1440.0,
-            1408.0
-        ],
-        [
-            1408.0,
-            1408.0
-        ],
-        [
-            1408.0,
-            1440.0
-        ],
-        [
-            1376.0,
-            1440.0
-        ],
-        [
-            1376.0,
-            1472.0
-        ],
-        [
-            1344.0,
-            1472.0
-        ],
-        [
-            1312.0,
-            1472.0
-        ],
-        [
-            1280.0,
-            1472.0
-        ],
-        [
-            1248.0,
-            1472.0
-        ],
-        [
-            1216.0,
-            1472.0
-        ],
-        [
-            1184.0,
-            1472.0
-        ],
-        [
-            1152.0,
-            1472.0
-        ],
-        [
-            1120.0,
-            1472.0
-        ],
-        [
-            1088.0,
-            1472.0
-        ],
-        [
-            1056.0,
-            1472.0
-        ],
-        [
-            1024.0,
-            1472.0
-        ],
-        [
-            992.0,
-            1472.0
-        ],
-        [
-            672.0,
-            1408.0
-        ],
-        [
-            640.0,
-            1408.0
-        ],
-        [
-            608.0,
-            1408.0
-        ],
-        [
-            256.0,
-            1312.0
-        ],
-        [
-            256.0,
-            1280.0
-        ],
-        [
-            256.0,
-            1248.0
-        ],
-        [
-            256.0,
-            1248.0
-        ],
-        [
-            384.0,
-            1120.0
-        ],
-        [
-            416.0,
-            1120.0
-        ],
-        [
-            448.0,
-            1120.0
-        ],
-        [
-            480.0,
-            1120.0
-        ],
-        [
-            512.0,
-            1120.0
-        ],
-        [
-            512.0,
-            1152.0
-        ],
-        [
-            512.0,
-            1184.0
-        ],
-        [
-            544.0,
-            1184.0
-        ],
-        [
-            576.0,
-            1184.0
-        ],
-        [
-            608.0,
-            1184.0
-        ],
-        [
-            928.0,
-            672.0
-        ],
-        [
-            896.0,
-            640.0
-        ],
-        [
-            2624.0,
-            864.0
-        ],
-        [
-            2656.0,
-            864.0
-        ],
-        [
-            2048.0,
-            1344.0
-        ],
-        [
-            2048.0,
-            1376.0
-        ],
-        [
-            2048.0,
-            1408.0
+            704,
+            576
         ]
     ],
     "pos": [
-        2179,
-        1300
+        826,
+        203
     ],
     "node densities": [
         {
-            "anchovy": 9,
+            "sardine": 5,
             "chub_mackerel": 7,
-            "sardine": 4
-        },
-        {
-            "anchovy": 15,
-            "sardine": 5
-        },
-        {
-            "anchovy": 20,
-            "sardine": 2
-        },
-        {
-            "anchovy": 5,
-            "bass": 10,
-            "sardine": 5
-        },
-        {
-            "pink_rockling": 10,
-            "rockling": 10
-        },
-        {
-            "pink_salmon": 20,
             "anchovy": 10
         },
         {
-            "pink_salmon": 10,
-            "anchovy": 5,
-            "sardine": 5
+            "anchovy": 156,
+            "sardine": 6
+        },
+        {
+            "anchovy": 25,
+            "sardine": 2
+        },
+        {
+            "anchovy": 6,
+            "sardine": 6,
+            "bass": 11
+        },
+        {
+            "pink_rockling": 13,
+            "rockling": 11
+        },
+        {
+            "pink_salmon": 21,
+            "anchovy": 11
+        },
+        {
+            "pink_salmon": 26,
+            "anchovy": 6
+        },
+        {
+            "black_marlin": 2
+        },
+        {
+            "yellow_perch": 7
+        },
+        {
+            "yellow_perch": 7
         }
     ],
     "golf cart": {
         "pos": [
-            2037.0000000000075,
-            1103.0999999999551
+            685.5999999999964,
+            1506.400000000002
         ],
-        "fuel": 36000,
-        "rate": 10,
+        "fuel": 5040,
+        "rate": 5,
         "accel": 0.13,
         "level": 0
+    },
+    "npcs_not_popped": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": true,
+        "8": false,
+        "9": false,
+        "10": false,
+        "11": false
+    },
+    "tutorials_shown": {
+        "test": [
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow ",
+            "wow wow wow wow wow wow wow wow wow wow "
+        ],
+        "fishing": [
+            "welcome to the",
+            "world of duckfish!",
+            "cast your rod to fish",
+            "fish where the fish are"
+        ],
+        "sell fish": [
+            "nice work on your first fish!",
+            "sell fish by pressing the",
+            " inventory button[t] and choose the",
+            "amount of fish to sell"
+        ],
+        "buy placebridge": [
+            "   nice work on your fisrt coppers!",
+            "you can use this coppers",
+            " to buy 'placebridges' at the stall"
+        ],
+        "quick holding and unholding": [
+            "you can quickly hold the last item ",
+            " you held by pressing: [q]",
+            "you can also unhold by pressing [g]"
+        ]
     }
 }

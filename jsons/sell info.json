@@ -7,7 +7,9 @@
         "pink_rockling": 3,
         "rockling": 3,
         "pink_salmon": 3,
-        "duckfish": -18446744073709551616
+        "duckfish": -18446744073709551616,
+        "black_marlin": 20,
+        "yellow_perch": 3
     },
     "misc": {
         "mallet": 5,
